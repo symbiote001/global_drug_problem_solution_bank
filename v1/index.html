@@ -1,0 +1,1786 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f14" />
+  <title>Venezuela–United States Global Drug Problem Solution Bank — Offline-First Policy Library</title>
+
+  <style>
+    /* =========================================================
+      TOOLTIP (CSS): Design + print rules
+      Purpose: Make this a readable, navigable, printable policy library.
+      Extend: Add new tokens in :root; add new panels via .card.
+      Outcome: Calm UI, fast scanning, decent printing, no clutter.
+    ========================================================== */
+    :root{
+      --bg:#070a0f;
+      --panel:#0c111a;
+      --panel2:#0a0f18;
+      --ink:#e9eef7;
+      --muted:#a9b5c7;
+      --faint:#6c7a92;
+      --line:#1b2636;
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 700px at 10% 5%, rgba(125,211,252,.10), transparent 55%),
+                  radial-gradient(900px 600px at 80% 10%, rgba(167,139,250,.10), transparent 60%),
+                  radial-gradient(1100px 900px at 50% 110%, rgba(52,211,153,.07), transparent 55%),
+                  var(--bg);
+      color:var(--ink);
+      line-height:1.45;
+      overflow-x:hidden;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip:focus{left:12px;top:12px;width:auto;height:auto;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;z-index:9999}
+    header{
+      position:relative;
+      padding:20px 18px 10px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(12,17,26,.85), rgba(12,17,26,.55));
+      backdrop-filter: blur(8px);
+      z-index:5;
+    }
+    .topbar{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+      min-width:260px;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:12px;
+      background: conic-gradient(from 220deg, rgba(125,211,252,.9), rgba(167,139,250,.9), rgba(52,211,153,.85), rgba(125,211,252,.9));
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      flex:0 0 auto;
+    }
+    h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:12.5px;
+      max-width:52ch;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(7,10,15,.35);
+    }
+    .pill label{font-size:12px;color:var(--muted)}
+    input[type="search"], input[type="text"], select{
+      background:transparent;
+      border:0;
+      outline:0;
+      color:var(--ink);
+      font-size:13px;
+      min-width:180px;
+    }
+    select{min-width:160px}
+    button{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background: rgba(12,17,26,.65);
+      color:var(--ink);
+      padding:9px 11px;
+      border-radius:12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+    button:hover{border-color:rgba(125,211,252,.35)}
+    button:active{transform:translateY(1px)}
+    .layout{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:14px;
+      padding:14px 14px 70px;
+    }
+    nav{
+      position:sticky;
+      top:10px;
+      align-self:start;
+      height:calc(100vh - 20px);
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: rgba(12,17,26,.45);
+      box-shadow: var(--shadow);
+    }
+    .navhead{
+      padding:12px 12px 10px;
+      border-bottom:1px solid var(--line);
+      background: rgba(10,15,24,.45);
+    }
+    .navtitle{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .navlist{padding:10px 10px 14px; display:flex; flex-direction:column; gap:6px}
+    .navitem{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 10px;
+      border:1px solid rgba(27,38,54,.7);
+      background: rgba(7,10,15,.30);
+      border-radius:14px;
+    }
+    .navitem:hover{border-color: rgba(125,211,252,.35)}
+    .navitem b{font-size:13px}
+    .navitem span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+    main{
+      min-width:0;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: rgba(12,17,26,.35);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .mainhead{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      background: rgba(10,15,24,.40);
+    }
+    .badgeRow{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(27,38,54,.9);
+      color:var(--muted);
+      background: rgba(7,10,15,.30);
+    }
+    .badge strong{color:var(--ink)}
+    .card{
+      margin:12px;
+      border:1px solid rgba(27,38,54,.9);
+      border-radius:var(--radius);
+      background: rgba(7,10,15,.28);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(27,38,54,.75);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      background: rgba(12,17,26,.35);
+    }
+    .card .hd h2{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .card .bd{padding:12px}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
+    .kpi{
+      border:1px solid rgba(27,38,54,.75);
+      border-radius:14px;
+      background: rgba(12,17,26,.35);
+      padding:10px;
+    }
+    .kpi .t{color:var(--muted); font-size:12px}
+    .kpi .v{font-size:14px; margin-top:6px}
+    .kpi .v code{font-family:var(--mono); font-size:12px; color:var(--accent)}
+    details{
+      border:1px solid rgba(27,38,54,.8);
+      border-radius:14px;
+      background: rgba(12,17,26,.22);
+      overflow:hidden;
+    }
+    details > summary{
+      padding:10px 12px;
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    details > summary::-webkit-details-marker{display:none}
+    summary .meta{
+      color:var(--muted);
+      font-size:12px;
+      font-family:var(--mono);
+    }
+    .detailsBody{
+      padding:10px 12px 12px;
+      border-top:1px solid rgba(27,38,54,.65);
+      color:var(--ink);
+    }
+    .tagRow{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+    .tag{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(27,38,54,.85);
+      color:var(--muted);
+      font-size:12px;
+      background: rgba(7,10,15,.25);
+    }
+    .tag.ok{border-color: rgba(52,211,153,.35); color:#bff3dc}
+    .tag.warn{border-color: rgba(251,191,36,.35); color:#ffe8b3}
+    .tag.bad{border-color: rgba(251,113,133,.35); color:#ffd1da}
+    .note{
+      color:var(--muted);
+      font-size:12.5px;
+      padding:10px 12px;
+      border-left:3px solid rgba(125,211,252,.55);
+      background: rgba(125,211,252,.06);
+      border-radius:12px;
+    }
+    .mini{
+      font-size:12.5px;
+      color:var(--muted);
+    }
+    .hr{
+      height:1px;
+      background: rgba(27,38,54,.8);
+      margin:10px 0;
+    }
+    .hud{
+      position:fixed;
+      right:12px;
+      bottom:12px;
+      width:320px;
+      max-width: calc(100vw - 24px);
+      border:1px solid var(--line);
+      background: rgba(12,17,26,.70);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      z-index:10;
+    }
+    .hud .bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid rgba(27,38,54,.7);
+      background: rgba(10,15,24,.55);
+    }
+    .hud .bar b{font-size:13px}
+    .hud .bar .right{
+      display:flex; gap:8px; align-items:center;
+    }
+    .tinyBtn{
+      padding:6px 8px;
+      border-radius:12px;
+      font-size:12px;
+      box-shadow:none;
+    }
+    .hud .content{padding:10px 12px}
+    .hud .row{display:flex; gap:10px; align-items:center; justify-content:space-between}
+    .meter{
+      height:10px; border-radius:999px; overflow:hidden; background: rgba(255,255,255,.06);
+      border:1px solid rgba(27,38,54,.85);
+    }
+    .meter > i{display:block; height:100%; width:40%; background: linear-gradient(90deg, rgba(125,211,252,.9), rgba(167,139,250,.9));}
+    canvas#constellation{
+      width:100%;
+      height:120px;
+      display:block;
+      border:1px solid rgba(27,38,54,.7);
+      border-radius:14px;
+      background: rgba(7,10,15,.28);
+    }
+    .footer{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 14px 28px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .footer .box{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: rgba(12,17,26,.35);
+      padding:12px;
+    }
+    .cols{display:grid; grid-template-columns: 1.2fr .8fr; gap:12px}
+    .mono{font-family:var(--mono)}
+    .kbd{
+      font-family:var(--mono);
+      border:1px solid rgba(27,38,54,.85);
+      border-bottom-color: rgba(27,38,54,1);
+      background: rgba(7,10,15,.35);
+      padding:1px 6px;
+      border-radius:8px;
+      color:var(--ink);
+      font-size:12px;
+    }
+    .splash{
+      position:fixed; inset:0;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(125,211,252,.16), transparent 60%),
+                  radial-gradient(900px 700px at 80% 20%, rgba(167,139,250,.14), transparent 62%),
+                  radial-gradient(1200px 900px at 50% 110%, rgba(52,211,153,.10), transparent 60%),
+                  rgba(7,10,15,.96);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+      animation: splashOut .6s ease forwards;
+      animation-delay: 1.2s;
+    }
+    .splash .panel{
+      width:min(720px, calc(100vw - 24px));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;
+      background: rgba(12,17,26,.55);
+      box-shadow: var(--shadow);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .splash .panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: conic-gradient(from 90deg, rgba(125,211,252,.0), rgba(125,211,252,.35), rgba(167,139,250,.35), rgba(52,211,153,.28), rgba(125,211,252,.0));
+      filter: blur(18px);
+      opacity:.7;
+      z-index:0;
+    }
+    .splash .panel > *{position:relative; z-index:1}
+    .splash h2{margin:0 0 6px; font-size:16px}
+    .splash p{margin:0; color:var(--muted); font-size:13px}
+    .spinner{
+      margin-top:14px;
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(27,38,54,.8);
+      background: rgba(0,0,0,.25);
+    }
+    .spinner i{
+      display:block; height:100%; width:35%;
+      background: linear-gradient(90deg, rgba(125,211,252,.9), rgba(167,139,250,.9), rgba(52,211,153,.85));
+      animation: load 1.2s ease-in-out infinite;
+    }
+    @keyframes load{
+      0%{transform:translateX(-120%)}
+      50%{transform:translateX(220%)}
+      100%{transform:translateX(520%)}
+    }
+    @keyframes splashOut{
+      to{opacity:0; visibility:hidden}
+    }
+
+    /* Parallax-ish longform sections (no external assets) */
+    .parallax{
+      position:relative;
+      border:1px solid rgba(27,38,54,.85);
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(125,211,252,.07), rgba(167,139,250,.05), rgba(52,211,153,.04));
+      overflow:hidden;
+    }
+    .parallax .layers{
+      position:absolute; inset:0;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .parallax .layer{
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(closest-side, rgba(125,211,252,.08), transparent 70%),
+        radial-gradient(closest-side, rgba(167,139,250,.07), transparent 72%),
+        radial-gradient(closest-side, rgba(52,211,153,.06), transparent 70%);
+      filter: blur(0px);
+      transform: translate3d(0,0,0);
+      mix-blend-mode: screen;
+    }
+    .parallax .content{
+      position:relative;
+      padding:12px;
+    }
+
+    /* Print */
+    @media print{
+      header, nav, .hud, .splash{display:none !important}
+      body{background:#fff;color:#000}
+      main{border:0; box-shadow:none; background:#fff}
+      .card, details{break-inside:avoid}
+      a{color:#000; text-decoration:underline}
+    }
+
+    @media (max-width: 980px){
+      .layout{grid-template-columns: 1fr}
+      nav{position:relative; height:auto}
+      input[type="search"]{min-width:120px}
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- =========================================================
+    TOOLTIP (HTML): Animated splash screen
+    Purpose: Quick orientation + no-jump load experience.
+    Extend: Change copy; tweak animation timing in CSS.
+    Outcome: Calm entry, professional feel, zero dependencies.
+  ========================================================== -->
+  <div class="splash" aria-hidden="true">
+    <div class="panel">
+      <h2>Loading the Solution Bank 🧭</h2>
+      <p>Offline-first. Zero coercion. Built for policy teams who want fewer funerals and more futures.</p>
+      <div class="spinner"><i></i></div>
+      <p class="mini" style="margin-top:10px;">Tip: Use <span class="kbd">Search</span> + filters to slice by domain, timeline, and risk.</p>
+    </div>
+  </div>
+
+  <header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Venezuela ↔ United States: Global Drug Problem Solution Bank</h1>
+          <p class="sub">A practical policy library (health, enforcement, finance, corruption controls, livelihoods, and diplomacy) with offline storage, search, and a “pick-a-portfolio” decision scaffold.</p>
+        </div>
+      </div>
+
+      <div class="controls" role="region" aria-label="Controls">
+        <div class="pill" title="Client-side search across the policy bank.">
+          <label for="q">Search</label>
+          <input id="q" type="search" placeholder="opioids, ports, money laundering, coca, diversion…" autocomplete="off" />
+        </div>
+        <div class="pill" title="Filter by domain. Extend domains in JS 'DOMAINS'.">
+          <label for="domain">Domain</label>
+          <select id="domain">
+            <option value="all">All</option>
+          </select>
+        </div>
+        <div class="pill" title="Filter by timeline urgency.">
+          <label for="horizon">Horizon</label>
+          <select id="horizon">
+            <option value="all">All</option>
+            <option value="0-90">0–90 days</option>
+            <option value="3-12">3–12 months</option>
+            <option value="1-3">1–3 years</option>
+            <option value="3+">3+ years</option>
+          </select>
+        </div>
+        <button id="btnSave" title="Save preferences & notes locally (IndexedDB). No external telemetry.">Save</button>
+        <button id="btnReset" title="Reset local data (preferences, notes, HUD stats).">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav aria-label="Table of contents">
+      <div class="navhead">
+        <p class="navtitle">
+          <span><b>Navigator</b> <span class="mini">— sections + directory plan</span></span>
+          <span class="mini mono" id="status">offline-ready</span>
+        </p>
+      </div>
+      <div class="navlist" id="toc">
+        <!-- filled by JS -->
+      </div>
+    </nav>
+
+    <main id="main" tabindex="-1">
+      <div class="mainhead">
+        <div class="badgeRow">
+          <span class="badge"><strong>Use-case:</strong> bi-national roadmap + global coordination</span>
+          <span class="badge"><strong>Method:</strong> portfolios, not single “silver bullets”</span>
+          <span class="badge"><strong>Principle:</strong> harm-reduction + institution-hardening</span>
+        </div>
+        <div class="badgeRow">
+          <span class="badge" title="These are intentionally non-prescriptive until you pick a portfolio."><strong>Mode:</strong> decision support</span>
+          <span class="badge" title="Local-only, user-resettable; no auto-sending."><strong>Privacy:</strong> local storage only</span>
+        </div>
+      </div>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="overview">What this is (and what it is not)</h2>
+          <span class="mini mono">v1.0 • standalone</span>
+        </div>
+        <div class="bd">
+          <div class="parallax" id="parallaxBox" title="Parallax panel (mouse/touch) — visual calm + subtle motion.">
+            <div class="layers" aria-hidden="true">
+              <div class="layer" data-depth="0.06" style="left:-10%; top:-20%;"></div>
+              <div class="layer" data-depth="0.10" style="left:10%; top:-10%; opacity:.75"></div>
+              <div class="layer" data-depth="0.14" style="left:-5%; top:10%; opacity:.55"></div>
+            </div>
+            <div class="content">
+              <p class="note">
+                This library is designed for <b>policy makers and government entities</b> building a cooperative Venezuela–U.S. approach to reduce drug-related deaths, violence, and corruption—without pretending the problem is one-dimensional.
+                It does <b>not</b> provide operational guidance for wrongdoing, evasion, trafficking, or harm. It is intentionally focused on prevention, treatment, enforcement integrity, and economic alternatives.
+              </p>
+
+              <div class="grid3" style="margin-top:12px;">
+                <div class="kpi">
+                  <div class="t">North Star</div>
+                  <div class="v">Fewer deaths, fewer new users, fewer “easy corruption” pathways.</div>
+                </div>
+                <div class="kpi">
+                  <div class="t">Strategy shape</div>
+                  <div class="v">Pick <b>portfolios</b>: health + enforcement + finance + livelihoods + diplomacy.</div>
+                </div>
+                <div class="kpi">
+                  <div class="t">Guardrails</div>
+                  <div class="v">Evidence-seeking, measurable outcomes, and reversible pilots.</div>
+                </div>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="grid2">
+                <div>
+                  <h3 style="margin:0 0 6px; font-size:13px;">How to use 🧩</h3>
+                  <ul class="mini" style="margin:0; padding-left:18px;">
+                    <li>Use <b>Search</b> to find relevant interventions fast.</li>
+                    <li>Filter by <b>Domain</b> and <b>Horizon</b> to stage work.</li>
+                    <li>Build a <b>3-layer portfolio</b>: (1) immediate stabilization, (2) 12-month institutional hardening, (3) long-run prosperity shift.</li>
+                    <li>Attach <b>metrics</b> + a <b>sunset clause</b> to each pilot.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 style="margin:0 0 6px; font-size:13px;">What teams overlook 👀</h3>
+                  <ul class="mini" style="margin:0; padding-left:18px;">
+                    <li>Demand-side and supply-side are coupled via <b>price, purity, and risk</b>.</li>
+                    <li>Corruption is a “system feature” when incentives are misaligned.</li>
+                    <li>Over-enforcement without treatment can shift markets to <b>deadlier substitutes</b>.</li>
+                    <li>“Win” means <b>shrinking recruitment</b> (economic alternatives) and <b>shrinking mortality</b> (treatment + safer supply controls).</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="directory">Directory structure + titles_of_indexes.html files</h2>
+          <span class="mini mono">copy/paste plan</span>
+        </div>
+        <div class="bd">
+          <p class="mini">Below is a suggested repository layout. Each <span class="kbd">index.html</span> is standalone (like this file), so teams can distribute modules independently.</p>
+
+          <details open>
+            <summary>
+              <span><b>Recommended repo tree</b></span>
+              <span class="meta">/policy-bank/ …</span>
+            </summary>
+            <div class="detailsBody">
+<pre class="mono" style="white-space:pre; margin:0; overflow:auto; padding:10px; border-radius:12px; border:1px solid rgba(27,38,54,.75); background:rgba(0,0,0,.18);">
+policy-bank/
+  README.md
+  index.html                                # Master Navigator (this file)
+
+  00_foundations/
+    index.html                              # Principles, definitions, shared metrics, governance
+    titles_of_indexes.html                  # Module registry + quick links
+
+  01_shared_intelligence/
+    index.html                              # Shared threat picture, data standards, early warning, dashboards
+    titles_of_indexes.html
+
+  02_demand_health/
+    index.html                              # Prevention, treatment, harm reduction, recovery, reintegration
+    titles_of_indexes.html
+    02a_overdose_mortality_index.html        # Overdose prevention & response systems (module)
+    02b_treatment_capacity_index.html        # Workforce, beds, MAT access, continuity of care (module)
+    02c_youth_prevention_index.html          # School/community prevention (module)
+
+  03_supply_disruption/
+    index.html                              # Targeted disruption, interdiction integrity, labs/precursors
+    titles_of_indexes.html
+    03a_precursor_controls_index.html        # Chemical/precursor governance (module)
+    03b_port_security_index.html             # Ports, containers, scanning, audits (module)
+
+  04_finance_anticorruption/
+    index.html                              # AML, beneficial ownership, customs fraud, graft controls
+    titles_of_indexes.html
+    04a_integrity_pacts_index.html           # Integrity systems, procurement shields (module)
+    04b_asset_recovery_index.html            # Asset tracing, recovery, reinvestment (module)
+
+  05_livelihoods_transition/
+    index.html                              # Economic alternatives, rural dev, jobs, legal markets
+    titles_of_indexes.html
+    05a_cash_for_work_index.html             # Rapid jobs + infrastructure + stabilization (module)
+    05b_agro_value_chains_index.html          # Legal agriculture & value chains (module)
+
+  06_bilateral_diplomacy/
+    index.html                              # Venezuela–U.S. cooperation architecture, confidence-building
+    titles_of_indexes.html
+    06a_joint_taskforces_index.html          # Joint governance + safeguards (module)
+    06b_sanctions_calibration_index.html     # Sanctions/relief calibration tied to verification (module)
+
+  07_regional_global_coordination/
+    index.html                              # Neighbor states, Caribbean routes, multilateral orgs
+    titles_of_indexes.html
+
+  08_portfolios_playbooks/
+    index.html                              # “Pick-a-portfolio” bundles for different realities
+    titles_of_indexes.html
+    08a_fast_stabilization_index.html        # 0–90 day portfolio (module)
+    08b_12_month_hardening_index.html        # 3–12 month portfolio (module)
+    08c_prosperity_shift_index.html          # 1–3 year+ portfolio (module)
+
+  09_tools_links/
+    index.html                              # Tools, utilities, training, legal references (no dead links)
+    titles_of_indexes.html
+
+  10_appendix/
+    index.html                              # Glossary, templates, checklists, risk registers
+    titles_of_indexes.html
+</pre>
+              <p class="mini" style="margin:10px 0 0;">
+                <b>Note:</b> The <span class="kbd">titles_of_indexes.html</span> files are simple registries listing the module filenames + one-line purpose statements, so a ministry team can navigate quickly even offline.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span><b>Template: titles_of_indexes.html content</b></span>
+              <span class="meta">drop-in stub</span>
+            </summary>
+            <div class="detailsBody">
+              <p class="mini">Use this for every folder. It’s intentionally tiny and printable.</p>
+<pre class="mono" style="white-space:pre; margin:0; overflow:auto; padding:10px; border-radius:12px; border:1px solid rgba(27,38,54,.75); background:rgba(0,0,0,.18);">
+&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+&lt;title&gt;Folder Index Titles&lt;/title&gt;
+&lt;body style="font-family:system-ui;max-width:900px;margin:24px auto;padding:0 12px"&gt;
+  &lt;h1&gt;Module Registry&lt;/h1&gt;
+  &lt;p&gt;Standalone files in this folder:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="index.html"&gt;index.html&lt;/a&gt; — Folder overview and navigation.&lt;/li&gt;
+    &lt;li&gt;&lt;a href="02a_overdose_mortality_index.html"&gt;02a_overdose_mortality_index.html&lt;/a&gt; — Overdose prevention & response systems.&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;hr&gt;
+  &lt;p&gt;&lt;small&gt;Local-only file. No tracking.&lt;/small&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="portfolios">Pick-a-Portfolio scaffolding (decision spine)</h2>
+          <span class="mini mono">for cabinets & ministries</span>
+        </div>
+        <div class="bd">
+          <p class="note">
+            The most reliable approach is <b>portfolio design</b>: choose mutually reinforcing interventions across domains, stage them by time horizon, and measure outputs and outcomes.
+            Below are three ready-to-adapt portfolio frames (not prescriptions).
+          </p>
+
+          <div class="grid3">
+            <div class="kpi">
+              <div class="t">Portfolio A: “Stop the dying” (0–90 days)</div>
+              <div class="v">Overdose response + treatment access + targeted disruption of the most lethal supply nodes.</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Portfolio B: “Harden institutions” (3–12 months)</div>
+              <div class="v">Customs integrity + AML + procurement shields + joint verification channels.</div>
+            </div>
+            <div class="kpi">
+              <div class="t">Portfolio C: “Shrink recruitment” (1–3+ years)</div>
+              <div class="v">Livelihoods + education + legal value chains + community trust rebuilding.</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <details open>
+            <summary><span><b>Portfolio design checklist</b></span><span class="meta">copy into a memo</span></summary>
+            <div class="detailsBody">
+              <ul class="mini" style="margin:0; padding-left:18px;">
+                <li><b>Define the target metric</b>: deaths, new initiations, violence rate, corruption indicators, treatment retention.</li>
+                <li><b>Pick 2–4 interventions per domain</b> (Health, Enforcement, Finance, Livelihoods, Diplomacy).</li>
+                <li><b>Assign owners</b>: ministry/agency + cross-border liaison.</li>
+                <li><b>Set a pilot geography</b>: start where measurement is possible.</li>
+                <li><b>Pre-register success thresholds</b> and <b>sunset rules</b> (stop/scale/modify).</li>
+                <li><b>Build anti-corruption scaffolding</b>: audits, rotations, external verification, whistleblower protection.</li>
+                <li><b>Communicate plainly</b>: “we’re reducing deaths + reducing recruitment + reducing corruption.”</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="bank">Solution bank (filterable)</h2>
+          <span class="mini mono" id="countLabel">0 items</span>
+        </div>
+        <div class="bd">
+          <div class="mini" style="margin-bottom:10px;">
+            Each item includes: <span class="kbd">domain</span>, <span class="kbd">horizon</span>, <span class="kbd">why it works</span>, <span class="kbd">risks</span>, <span class="kbd">minimum viable pilot</span>, <span class="kbd">metrics</span>.
+          </div>
+          <div id="bankList" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="unasked">Unasked questions policy teams should force themselves to answer</h2>
+          <span class="mini mono">anti-self-deception</span>
+        </div>
+        <div class="bd">
+          <details open>
+            <summary><span><b>Governance & trust</b></span><span class="meta">what makes cooperation real?</span></summary>
+            <div class="detailsBody">
+              <ul class="mini" style="margin:0; padding-left:18px;">
+                <li>What <b>verification</b> would each side accept without humiliation?</li>
+                <li>Which institutions are “<b>capture-prone</b>” (customs, ports, procurement) and what are the hardening steps?</li>
+                <li>What is the <b>minimum viable cooperation</b> that can survive political cycles?</li>
+                <li>How will you protect <b>frontline staff</b> from retaliation when they refuse bribes?</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary><span><b>Market dynamics</b></span><span class="meta">how will the market adapt?</span></summary>
+            <div class="detailsBody">
+              <ul class="mini" style="margin:0; padding-left:18px;">
+                <li>If supply is disrupted, what substitute increases (synthetics, adulterants) are most likely, and how do you prevent <b>deadlier shifts</b>?</li>
+                <li>Where are the <b>key chokepoints</b> (precursors, labs, ports, money flows) that reduce harm fastest?</li>
+                <li>Which interventions reduce <b>recruitment</b> (youth pathways, jobs, schooling continuity) in your highest-risk regions?</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary><span><b>Human systems</b></span><span class="meta">treatment, stigma, reintegration</span></summary>
+            <div class="detailsBody">
+              <ul class="mini" style="margin:0; padding-left:18px;">
+                <li>How do you expand treatment without creating bottlenecks (workforce, continuity of care, meds access)?</li>
+                <li>What policies reduce deaths immediately while you scale longer-term prevention?</li>
+                <li>How will you measure <b>retention</b> and <b>quality</b>, not just “beds” or “visits”?</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="templates">Templates (copy/paste)</h2>
+          <span class="mini mono">pilots + metrics</span>
+        </div>
+        <div class="bd">
+          <details open>
+            <summary><span><b>Pilot charter template</b></span><span class="meta">1–2 pages</span></summary>
+            <div class="detailsBody">
+              <div class="mini">
+                <p><b>Goal:</b> Reduce <span class="kbd">X</span> by <span class="kbd">Y%</span> in <span class="kbd">Z months</span> in <span class="kbd">region</span>.</p>
+                <p><b>Interventions:</b> (Health) … (Enforcement integrity) … (Finance) … (Livelihoods) … (Diplomacy/coordination) …</p>
+                <p><b>Owners:</b> Lead agency + partners; define liaison(s) for U.S. ↔ Venezuela coordination.</p>
+                <p><b>Safeguards:</b> anti-corruption controls, audit cadence, whistleblower channels, data integrity checks.</p>
+                <p><b>Metrics:</b> outputs (what you did), outcomes (what changed), and unintended consequences (what got worse).</p>
+                <p><b>Stop/Scale rules:</b> thresholds; sunset clause; public reporting cadence.</p>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary><span><b>Metric bundle</b></span><span class="meta">minimal set</span></summary>
+            <div class="detailsBody">
+              <ul class="mini" style="margin:0; padding-left:18px;">
+                <li><b>Mortality:</b> overdose deaths per 100k; EMS naloxone reversals; nonfatal overdoses.</li>
+                <li><b>Treatment:</b> initiation within 7 days; retention at 30/90/180 days; continuity after release from custody.</li>
+                <li><b>Market:</b> purity/adulterant signals (where available); seizures of high-lethality batches; precursor diversion incidents.</li>
+                <li><b>Violence:</b> homicide/extortion in hot zones; intimidation incidents against officials.</li>
+                <li><b>Integrity:</b> audit findings; unexplained wealth flags; procurement anomalies; whistleblower resolution time.</li>
+                <li><b>Livelihoods:</b> jobs created, school attendance continuity, youth recruitment indicators.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2 id="tools">Tools, utilities, and learning (local-first)</h2>
+          <span class="mini mono">no dead links</span>
+        </div>
+        <div class="bd">
+          <p class="mini">
+            This file avoids external links to keep it durable offline. In your <span class="kbd">09_tools_links/index.html</span>, include:
+            (1) official government/public health sources, (2) data standards docs, (3) procurement integrity guides, (4) training curricula.
+          </p>
+          <div class="note">
+            Operational rule: any analytics should be <b>optional</b>, <b>local-only</b>, transparent, and user-resettable. No auto-send. No hidden telemetry.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- =========================================================
+    TOOLTIP (HTML): HUD + state visualizer
+    Purpose: Gamified progress + local-only “work remembered” cues.
+    Extend: Add new stats in JS 'state.hud'.
+    Outcome: Encourages completion without coercion.
+  ========================================================== -->
+  <aside class="hud" aria-label="Gamification HUD">
+    <div class="bar">
+      <b>Policy HUD 🧠🛡️</b>
+      <div class="right">
+        <button class="tinyBtn" id="btnNote" title="Add a local note to the currently viewed section.">Note</button>
+        <button class="tinyBtn" id="btnHudToggle" title="Collapse/expand HUD.">Hide</button>
+      </div>
+    </div>
+    <div class="content" id="hudBody">
+      <div class="row">
+        <div class="mini">Reviewed items</div>
+        <div class="mini mono"><span id="reviewedCount">0</span> / <span id="totalCount">0</span></div>
+      </div>
+      <div class="meter" aria-hidden="true" style="margin:6px 0 10px;"><i id="meterFill" style="width:0%"></i></div>
+
+      <div class="grid3">
+        <div class="kpi">
+          <div class="t">Streak</div>
+          <div class="v"><span id="streak">0</span> days</div>
+        </div>
+        <div class="kpi">
+          <div class="t">Saved notes</div>
+          <div class="v"><span id="notesCount">0</span></div>
+        </div>
+        <div class="kpi">
+          <div class="t">Mode</div>
+          <div class="v"><span id="modeLabel">planner</span></div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+      <div class="mini" style="margin-bottom:8px;">Constellation (local state)</div>
+      <canvas id="constellation" width="640" height="240" aria-label="Constellation visualizer"></canvas>
+      <div class="mini" style="margin-top:8px;">
+        Tip: Mark items as <span class="tag ok">Selected</span> to build a portfolio, then export notes manually.
+      </div>
+    </div>
+  </aside>
+
+  <footer class="footer" role="contentinfo">
+    <div class="box">
+      <div class="cols">
+        <div>
+          <b>Zero-Harm & Anti-Inversion Note</b> ✅🧭
+          <p class="mini" style="margin-top:6px;">
+            This library is designed to reduce harm, protect human rights, and strengthen institutions against capture. It avoids enabling wrongdoing or coercion.
+            All storage is local-only and user-resettable. No automatic sending. No hidden telemetry.
+          </p>
+          <b>Attributions & Licensing</b> 📎
+          <p class="mini" style="margin-top:6px;">
+            UI patterns are inspired by common open web conventions (collapsible details/summary, client-side search, offline storage patterns).
+            No proprietary code is copied; this is an original standalone implementation.
+          </p>
+        </div>
+        <div>
+          <b>Local controls</b>
+          <ul class="mini" style="margin:8px 0 0; padding-left:18px;">
+            <li><span class="kbd">Save</span> stores preferences/notes in IndexedDB.</li>
+            <li><span class="kbd">Reset</span> wipes local data.</li>
+            <li>Print uses a clean stylesheet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!--
+    Zero-Harm & Anti-Inversion Note:
+    This file is designed for harm-reduction and institutional integrity. It does not provide instructions
+    for evasion, trafficking, corruption, or violence. All data is local-only, optional, transparent, and resettable.
+  -->
+
+  <noscript>
+    <div style="max-width:1200px;margin:18px auto;padding:12px;border:1px solid #ccc;border-radius:12px;background:#fff;color:#000;">
+      <b>Noscript fallback</b>
+      <p>This page works best with JavaScript enabled for search, filtering, and offline saving. Without JS, you can still scroll and read the policy bank sections.</p>
+    </div>
+  </noscript>
+
+  <script>
+    /* =========================================================
+      TOOLTIP (JS): Safety + Sanitization + Gentle rate limiting
+      Purpose: Prevent injection in notes/search, keep UI robust.
+      Extend: Update RATE_LIMIT if you add more user inputs.
+      Outcome: No surprises, safer local-only interactivity.
+    ========================================================== */
+    const RATE_LIMIT = { last: 0, minMs: 120 };
+    function now(){ return Date.now(); }
+    function rateOk(){
+      const t = now();
+      if (t - RATE_LIMIT.last < RATE_LIMIT.minMs) return false;
+      RATE_LIMIT.last = t;
+      return true;
+    }
+    function escapeHTML(str){
+      return String(str).replace(/[&<>"'`]/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"
+      }[s]));
+    }
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+    /* =========================================================
+      TOOLTIP (JS): IndexedDB local storage
+      Purpose: Store preferences, notes, “reviewed” items offline.
+      Extend: Add new object stores or fields in DB_VERSION bump.
+      Outcome: Durable offline usage, user-resettable.
+    ========================================================== */
+    const DB_NAME = "vxus_policy_bank";
+    const DB_VERSION = 1;
+    const STORES = { kv:"kv", notes:"notes", reviewed:"reviewed" };
+
+    function openDB(){
+      return new Promise((resolve,reject)=>{
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e)=>{
+          const db = req.result;
+          if (!db.objectStoreNames.contains(STORES.kv)) db.createObjectStore(STORES.kv);
+          if (!db.objectStoreNames.contains(STORES.notes)) db.createObjectStore(STORES.notes, { keyPath:"id" });
+          if (!db.objectStoreNames.contains(STORES.reviewed)) db.createObjectStore(STORES.reviewed, { keyPath:"id" });
+        };
+        req.onsuccess = ()=> resolve(req.result);
+        req.onerror = ()=> reject(req.error);
+      });
+    }
+    async function dbPut(store, value, key){
+      const db = await openDB();
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(store, "readwrite");
+        const os = tx.objectStore(store);
+        const req = (key !== undefined) ? os.put(value, key) : os.put(value);
+        req.onsuccess = ()=> resolve(true);
+        req.onerror = ()=> reject(req.error);
+        tx.oncomplete = ()=> db.close();
+      });
+    }
+    async function dbGet(store, key){
+      const db = await openDB();
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(store, "readonly");
+        const os = tx.objectStore(store);
+        const req = os.get(key);
+        req.onsuccess = ()=> resolve(req.result);
+        req.onerror = ()=> reject(req.error);
+        tx.oncomplete = ()=> db.close();
+      });
+    }
+    async function dbAll(store){
+      const db = await openDB();
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction(store, "readonly");
+        const os = tx.objectStore(store);
+        const req = os.getAll();
+        req.onsuccess = ()=> resolve(req.result || []);
+        req.onerror = ()=> reject(req.error);
+        tx.oncomplete = ()=> db.close();
+      });
+    }
+    async function dbClearAll(){
+      const db = await openDB();
+      return new Promise((resolve,reject)=>{
+        const tx = db.transaction([STORES.kv,STORES.notes,STORES.reviewed], "readwrite");
+        for (const s of [STORES.kv,STORES.notes,STORES.reviewed]) tx.objectStore(s).clear();
+        tx.oncomplete = ()=> { db.close(); resolve(true); };
+        tx.onerror = ()=> { db.close(); reject(tx.error); };
+      });
+    }
+
+    /* =========================================================
+      TOOLTIP (JS): Policy data model
+      Purpose: Single source of truth for solution bank items.
+      Extend: Add new items; keep ids stable for notes/reviewed.
+      Outcome: Filterable, searchable, portable modules.
+    ========================================================== */
+    const DOMAINS = [
+      "Demand & Health",
+      "Supply Disruption",
+      "Finance & Anti-Corruption",
+      "Livelihoods & Transition",
+      "Bilateral Diplomacy",
+      "Regional & Global Coordination",
+      "Data & Evaluation",
+      "Communication & Trust"
+    ];
+    const BANK = [
+      /* ---------------------- Demand & Health ---------------------- */
+      {
+        id:"DH-01",
+        title:"Rapid overdose response scale-up (naloxone, EMS protocols, community distribution)",
+        domain:"Demand & Health",
+        horizon:"0-90",
+        why:"Overdose deaths respond quickly to access + training + consistent protocols; buys time for deeper reforms.",
+        risks:"Uneven coverage; stigma; supply volatility can outpace response capacity.",
+        mvp:"Map hotspots; distribute naloxone via clinics/pharmacies/community partners; train first responders + peers; standardize post-overdose care linkage.",
+        metrics:["overdose deaths","nonfatal overdoses","naloxone reversals","time-to-treatment referral"]
+      },
+      {
+        id:"DH-02",
+        title:"Low-barrier treatment access (same-day initiation, continuity of care)",
+        domain:"Demand & Health",
+        horizon:"0-90",
+        why:"Reducing friction increases uptake; continuity reduces relapse risk and chaotic use patterns.",
+        risks:"Workforce bottlenecks; medication supply constraints; fragmented records.",
+        mvp:"Same-day intake; bridge prescriptions; warm handoffs; mobile outreach; continuity after incarceration/hospitalization.",
+        metrics:["treatment initiation <7 days","30/90-day retention","post-release linkage rate"]
+      },
+      {
+        id:"DH-03",
+        title:"Integrated mental health + substance use care (co-occurring disorders)",
+        domain:"Demand & Health",
+        horizon:"3-12",
+        why:"Co-morbid mental health conditions drive relapse and instability; integration improves retention.",
+        risks:"Coordination overhead; privacy barriers; underfunding.",
+        mvp:"Co-located services in pilot regions; shared care plans; crisis pathways that route to care not chaos.",
+        metrics:["retention","ED visits","housing stability","patient-reported outcomes"]
+      },
+      {
+        id:"DH-04",
+        title:"Youth prevention via community protective factors (school attendance continuity + family supports)",
+        domain:"Demand & Health",
+        horizon:"1-3",
+        why:"Prevention works by reducing risk exposure and increasing alternatives; strongest impact is long-run recruitment shrink.",
+        risks:"Slow visible wins; politicization; poor targeting wastes budget.",
+        mvp:"Hotspot school catchments; attendance supports; after-school programs; mentorship; family stabilization services.",
+        metrics:["new initiation proxies","school attendance","youth victimization","program retention"]
+      },
+      {
+        id:"DH-05",
+        title:"Reintegration supports (housing-first, employment bridges, record relief where appropriate)",
+        domain:"Demand & Health",
+        horizon:"1-3",
+        why:"Stable housing and income reduce relapse risk and reduce criminal market pull.",
+        risks:"Community backlash; insufficient affordable housing; administrative complexity.",
+        mvp:"Housing-first pilot + job bridge; case management; targeted record relief for nonviolent low-level offenses to improve employment access.",
+        metrics:["housing stability","employment","recidivism","treatment retention"]
+      },
+
+      /* ---------------------- Supply Disruption ---------------------- */
+      {
+        id:"SD-01",
+        title:"Focus on high-lethality nodes (labs, adulteration points, fentanyl analog clusters) rather than broad sweeps",
+        domain:"Supply Disruption",
+        horizon:"0-90",
+        why:"Targeting the most lethal supply segments yields faster mortality reduction than low-signal mass operations.",
+        risks:"Displacement to new nodes; intelligence gaps; corruption exposure.",
+        mvp:"Joint analytic cell (even if indirect) to identify lethality clusters; prioritize seizures that remove high-risk batches; protect data integrity.",
+        metrics:["lethal-batch seizures","overdose spikes","adulterant signals","case integrity audits"]
+      },
+      {
+        id:"SD-02",
+        title:"Precursor chemical controls + diversion detection (transparent licensing, audits, red-flag analytics)",
+        domain:"Supply Disruption",
+        horizon:"3-12",
+        why:"Synthetic drug supply is constrained by precursor availability and diversion pathways.",
+        risks:"Legitimate industry burden; corruption at licensing points; black-market substitution.",
+        mvp:"License registry; audit schedule; red-flag triggers (volume anomalies, routing anomalies); penalties for diversion + protections for compliant firms.",
+        metrics:["diversion incidents","audit findings","precursor anomalies","time-to-enforcement action"]
+      },
+      {
+        id:"SD-03",
+        title:"Port and container integrity (randomized inspections + anti-corruption rotations + tamper-evident chain-of-custody)",
+        domain:"Supply Disruption",
+        horizon:"3-12",
+        why:"Ports are critical choke points; integrity systems reduce capture and increase detection probability.",
+        risks:"Throughput slowdown; corruption backlash; political interference.",
+        mvp:"Randomization; staff rotations; independent audit presence; sealed chain-of-custody for inspected containers; incident reporting.",
+        metrics:["inspection coverage","seizure rate per inspection","integrity incidents","throughput impact"]
+      },
+      {
+        id:"SD-04",
+        title:"Community violence interruption + focused deterrence in hotspot corridors",
+        domain:"Supply Disruption",
+        horizon:"0-90",
+        why:"Violence is often concentrated; targeted approaches reduce harm without broad punitive spillover.",
+        risks:"Mis-targeting; mistrust; retaliation risks.",
+        mvp:"Hotspot mapping; trusted mediators; focused enforcement on violent actors; victim support; safe reporting channels.",
+        metrics:["homicides","retaliation incidents","community trust surveys","case clearance integrity"]
+      },
+
+      /* ---------------------- Finance & Anti-Corruption ---------------------- */
+      {
+        id:"FA-01",
+        title:"Beneficial ownership transparency + shell-company disruption for drug money flows",
+        domain:"Finance & Anti-Corruption",
+        horizon:"3-12",
+        why:"Drug markets are businesses; money laundering is the circulatory system.",
+        risks:"Elite resistance; regulatory loopholes; cross-border complexity.",
+        mvp:"Beneficial ownership register; verification sampling; suspicious transaction coordination; targeted enforcement on facilitators.",
+        metrics:["verified owners %","SAR quality","asset freezes","facilitator prosecutions"]
+      },
+      {
+        id:"FA-02",
+        title:"Customs fraud crackdown as drug strategy (invoicing, under/over-valuation, phantom shipments)",
+        domain:"Finance & Anti-Corruption",
+        horizon:"3-12",
+        why:"Trade-based laundering often overlaps with trafficking logistics; tackling fraud hits both revenue and cover.",
+        risks:"Business pushback; corruption; capacity constraints.",
+        mvp:"Risk scoring for invoices/shippers; audit teams; cross-check import/export records; penalties and remediation paths.",
+        metrics:["fraud detections","recovered duties","linked trafficking cases","audit integrity score"]
+      },
+      {
+        id:"FA-03",
+        title:"Integrity pacts for procurement + rotations for high-risk posts + protected reporting",
+        domain:"Finance & Anti-Corruption",
+        horizon:"0-90",
+        why:"Procurement and postings are classic capture points; integrity scaffolds reduce easy corruption.",
+        risks:"Institutional resistance; whistleblower retaliation.",
+        mvp:"Integrity pacts on major contracts; rotation rules; anonymous reporting; independent triage + follow-up SLA.",
+        metrics:["procurement anomalies","time-to-investigation","retaliation claims","rotation compliance"]
+      },
+      {
+        id:"FA-04",
+        title:"Asset recovery with reinvestment covenant (recovered funds → treatment + livelihoods)",
+        domain:"Finance & Anti-Corruption",
+        horizon:"1-3",
+        why:"Reinvesting recovered proceeds builds legitimacy and creates visible public benefit.",
+        risks:"Perverse incentives; politicization; misallocation.",
+        mvp:"Legal pathway for recovery; transparent reinvestment fund; citizen reporting; annual audits; clear allocation formula.",
+        metrics:["assets recovered","audit pass rate","fund deployment speed","outcome improvements"]
+      },
+
+      /* ---------------------- Livelihoods & Transition ---------------------- */
+      {
+        id:"LT-01",
+        title:"Cash-for-work + infrastructure stabilization in high-recruitment communities",
+        domain:"Livelihoods & Transition",
+        horizon:"0-90",
+        why:"Immediate lawful income reduces recruitment pressure and stabilizes households.",
+        risks:"Leakage/corruption; short-termism; dependency.",
+        mvp:"Targeted public works; transparent payroll; community oversight; tie-ins to skills certification.",
+        metrics:["jobs created","payroll integrity","school attendance","recruitment indicators"]
+      },
+      {
+        id:"LT-02",
+        title:"Legal value chains (agro-processing, logistics, fisheries, renewables micro-infrastructure)",
+        domain:"Livelihoods & Transition",
+        horizon:"1-3",
+        why:"Long-run recruitment shrinks when legal markets are competitive and reliable.",
+        risks:"Market access; supply chain fragility; rent-seeking.",
+        mvp:"Select 2–3 scalable sectors; remove bottlenecks; microfinance with anti-fraud; export facilitation with integrity controls.",
+        metrics:["SME survival","exports","income stability","corruption complaints"]
+      },
+      {
+        id:"LT-03",
+        title:"Formalization-lite: reduce red tape for small business while increasing audit probability for large fraud",
+        domain:"Livelihoods & Transition",
+        horizon:"3-12",
+        why:"When legal business is hard, illicit business wins; simplify compliance and focus enforcement where harm is highest.",
+        risks:"Regulatory arbitrage; capacity constraints.",
+        mvp:"One-stop registration; simplified taxes; random audits; anti-bribery hotlines.",
+        metrics:["registrations","time-to-start","tax compliance","bribery reports"]
+      },
+
+      /* ---------------------- Bilateral Diplomacy ---------------------- */
+      {
+        id:"BD-01",
+        title:"Joint ‘verification-first’ cooperation cell (shared objectives, bounded scope, independent audits)",
+        domain:"Bilateral Diplomacy",
+        horizon:"0-90",
+        why:"Cooperation survives politics when scope is narrow, verifiable, and mutually dignifying.",
+        risks:"Mistrust; politicization; intelligence misuse fears.",
+        mvp:"Define 3 shared targets: (1) reduce deaths, (2) reduce corruption in ports/customs, (3) reduce money laundering facilitators; publish high-level metrics.",
+        metrics:["joint milestones met","audit results","incident response time","public confidence trend"]
+      },
+      {
+        id:"BD-02",
+        title:"Sanctions calibration tied to measured anti-corruption + humanitarian outcomes (clear triggers, reversible steps)",
+        domain:"Bilateral Diplomacy",
+        horizon:"3-12",
+        why:"Incentives matter; clear, measurable triggers reduce ambiguity and increase compliance likelihood.",
+        risks:"Domestic backlash; misinterpretation; gaming metrics.",
+        mvp:"Define triggers (audit pass rates, integrity rotations, treatment expansion) and corresponding relief steps; build independent verification.",
+        metrics:["trigger achievement","verification disputes","humanitarian indicators","corruption indicators"]
+      },
+      {
+        id:"BD-03",
+        title:"Judicial cooperation on financial facilitators (lawful mutual legal assistance, anti-retaliation safeguards)",
+        domain:"Bilateral Diplomacy",
+        horizon:"3-12",
+        why:"Facilitators enable scale; lawful cooperation can reduce impunity without broad-brush escalation.",
+        risks:"Sovereignty concerns; politicization; witness safety.",
+        mvp:"Prioritize facilitator networks; agree on evidence standards; protect witnesses; publish aggregate outcomes.",
+        metrics:["cases initiated","convictions (due process)","witness safety incidents","asset recovery"]
+      },
+
+      /* ---------------------- Regional & Global Coordination ---------------------- */
+      {
+        id:"RG-01",
+        title:"Caribbean & regional route coordination (ports, coast guards, customs integrity sharing)",
+        domain:"Regional & Global Coordination",
+        horizon:"3-12",
+        why:"Trafficking routes shift; regional coordination reduces displacement effects.",
+        risks:"Uneven capacity; corruption spillover; jurisdiction gaps.",
+        mvp:"Shared risk advisories; port integrity standards; training; rotating joint inspections with independent observers.",
+        metrics:["route disruption signals","integrity audits","seizure-to-harm ratio","capacity growth"]
+      },
+      {
+        id:"RG-02",
+        title:"Public health data interoperability for overdose surveillance (privacy-preserving aggregation)",
+        domain:"Regional & Global Coordination",
+        horizon:"0-90",
+        why:"Fast detection of spikes enables targeted response; aggregated data reduces privacy risk.",
+        risks:"Data misuse fears; fragmentation; underreporting.",
+        mvp:"Agree minimum dataset; aggregate by region/time; publish alerts; ensure privacy controls and oversight.",
+        metrics:["reporting latency","alert-to-action time","coverage","false positives/negatives"]
+      },
+
+      /* ---------------------- Data & Evaluation ---------------------- */
+      {
+        id:"DE-01",
+        title:"Pre-registered pilots + independent evaluation + ‘stop/scale’ rules",
+        domain:"Data & Evaluation",
+        horizon:"0-90",
+        why:"Reduces politicized story-wars; turns policy into learnable experiments.",
+        risks:"Evaluation capture; poor data quality; slow bureaucracy.",
+        mvp:"Pilot charter; metrics; baseline; independent review; publish results on schedule.",
+        metrics:["pilot completion","data quality score","policy iteration time","outcome deltas"]
+      },
+      {
+        id:"DE-02",
+        title:"Corruption risk register for every intervention (who can steal, how, and how you prevent it)",
+        domain:"Data & Evaluation",
+        horizon:"0-90",
+        why:"Most failures are predictable; naming risks early prevents ‘surprised Pikachu’ governance.",
+        risks:"Political sensitivity; defensive reactions.",
+        mvp:"Create risk register; assign mitigations; audit monthly; protect reporters.",
+        metrics:["risk mitigations implemented","audit findings","incident resolution time"]
+      },
+
+      /* ---------------------- Communication & Trust ---------------------- */
+      {
+        id:"CT-01",
+        title:"One narrative: ‘reduce deaths + reduce recruitment + reduce corruption’ (plain language, no demonization)",
+        domain:"Communication & Trust",
+        horizon:"0-90",
+        why:"Public trust affects compliance, reporting, and service uptake; demonization drives stigma and avoidance.",
+        risks:"Polarization; misinformation campaigns; scapegoating.",
+        mvp:"Unified message; publish dashboards; admit uncertainty; show reversible pilots; protect human dignity.",
+        metrics:["service uptake","survey trust","hotline reports","misinfo correction reach"]
+      },
+      {
+        id:"CT-02",
+        title:"Community feedback loops (safe reporting, local councils, citizen oversight for funds)",
+        domain:"Communication & Trust",
+        horizon:"3-12",
+        why:"Legitimacy reduces recruitment; citizen oversight reduces leakage and improves targeting.",
+        risks:"Retaliation; tokenism; capture of councils.",
+        mvp:"Anonymous reporting channels; rotating citizen panels; publish responses; protect participants.",
+        metrics:["reports submitted","response SLA","retaliation incidents","fund leakage estimates"]
+      }
+    ];
+
+    /* =========================================================
+      TOOLTIP (JS): Rendering + filtering
+      Purpose: Build TOC, render bank items as collapsible entries.
+      Extend: Add more sections to SECTIONS; items to BANK.
+      Outcome: Fast navigation, interactive browsing.
+    ========================================================== */
+    const SECTIONS = [
+      { id:"overview", label:"What this is", desc:"Scope, guardrails, how to use" },
+      { id:"directory", label:"Directory structure", desc:"Repo tree + titles_of_indexes.html" },
+      { id:"portfolios", label:"Pick-a-Portfolio", desc:"Decision scaffolding" },
+      { id:"bank", label:"Solution bank", desc:"Filterable interventions" },
+      { id:"unasked", label:"Unasked questions", desc:"Governance blind spots" },
+      { id:"templates", label:"Templates", desc:"Pilot charter + metrics" },
+      { id:"tools", label:"Tools & links", desc:"Local-first guidance" }
+    ];
+
+    const els = {
+      q: document.getElementById("q"),
+      domain: document.getElementById("domain"),
+      horizon: document.getElementById("horizon"),
+      toc: document.getElementById("toc"),
+      bankList: document.getElementById("bankList"),
+      countLabel: document.getElementById("countLabel"),
+      status: document.getElementById("status"),
+      btnSave: document.getElementById("btnSave"),
+      btnReset: document.getElementById("btnReset"),
+      btnNote: document.getElementById("btnNote"),
+      btnHudToggle: document.getElementById("btnHudToggle"),
+      reviewedCount: document.getElementById("reviewedCount"),
+      totalCount: document.getElementById("totalCount"),
+      meterFill: document.getElementById("meterFill"),
+      streak: document.getElementById("streak"),
+      notesCount: document.getElementById("notesCount"),
+      modeLabel: document.getElementById("modeLabel"),
+      hudBody: document.getElementById("hudBody")
+    };
+
+    function buildDomainOptions(){
+      for (const d of DOMAINS){
+        const o = document.createElement("option");
+        o.value = d;
+        o.textContent = d;
+        els.domain.appendChild(o);
+      }
+    }
+
+    function buildTOC(){
+      els.toc.innerHTML = "";
+      for (const s of SECTIONS){
+        const a = document.createElement("a");
+        a.href = "#" + s.id;
+        a.className = "navitem";
+        a.innerHTML = `<div style="flex:1">
+          <b>${escapeHTML(s.label)}</b>
+          <span>${escapeHTML(s.desc)}</span>
+        </div>`;
+        els.toc.appendChild(a);
+      }
+    }
+
+    function horizonMatches(itemH, filter){
+      if (filter === "all") return true;
+      return itemH === filter;
+    }
+    function domainMatches(itemD, filter){
+      if (filter === "all") return true;
+      return itemD === filter;
+    }
+    function textMatches(item, q){
+      if (!q) return true;
+      const hay = (item.title + " " + item.domain + " " + item.horizon + " " + item.why + " " + item.risks + " " + item.mvp + " " + item.metrics.join(" ")).toLowerCase();
+      return hay.includes(q.toLowerCase());
+    }
+
+    function horizonLabel(h){
+      if (h === "0-90") return "0–90 days";
+      if (h === "3-12") return "3–12 months";
+      if (h === "1-3") return "1–3 years";
+      if (h === "3+") return "3+ years";
+      return h;
+    }
+
+    function domainTagClass(d){
+      // tiny aesthetic mapping
+      if (d.includes("Health")) return "ok";
+      if (d.includes("Anti-Corruption")) return "warn";
+      if (d.includes("Supply")) return "warn";
+      if (d.includes("Diplomacy")) return "ok";
+      if (d.includes("Data")) return "ok";
+      return "";
+    }
+
+    function renderBank(items, reviewedSet, selectedSet){
+      els.bankList.innerHTML = "";
+      els.countLabel.textContent = `${items.length} items`;
+      els.totalCount.textContent = String(BANK.length);
+
+      for (const it of items){
+        const isReviewed = reviewedSet.has(it.id);
+        const isSelected = selectedSet.has(it.id);
+
+        const d = document.createElement("details");
+        d.dataset.id = it.id;
+
+        // When user opens, mark as reviewed (local-only)
+        d.addEventListener("toggle", async ()=>{
+          if (!rateOk()) return;
+          if (d.open){
+            reviewedSet.add(it.id);
+            await dbPut(STORES.reviewed, { id: it.id, ts: Date.now() });
+            updateHUD(reviewedSet);
+          }
+        });
+
+        const summary = document.createElement("summary");
+        summary.innerHTML = `
+          <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+            <span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <b style="font-size:13px;">${escapeHTML(it.title)}</b>
+              <span class="tag ${domainTagClass(it.domain)}">${escapeHTML(it.domain)}</span>
+              <span class="tag">${escapeHTML(horizonLabel(it.horizon))}</span>
+              ${isReviewed ? `<span class="tag ok">Reviewed</span>` : ``}
+              ${isSelected ? `<span class="tag ok">Selected</span>` : ``}
+            </span>
+            <span class="meta">ID: ${escapeHTML(it.id)} • Horizon: ${escapeHTML(it.horizon)} • Metrics: ${escapeHTML(it.metrics.slice(0,3).join(", "))}${it.metrics.length>3?"…":""}</span>
+          </span>
+          <span class="meta">▾</span>
+        `;
+        d.appendChild(summary);
+
+        const body = document.createElement("div");
+        body.className = "detailsBody";
+        body.innerHTML = `
+          <div class="grid2">
+            <div>
+              <div class="mini"><b>Why this can work</b></div>
+              <div class="mini">${escapeHTML(it.why)}</div>
+              <div class="hr"></div>
+              <div class="mini"><b>Risks / failure modes</b></div>
+              <div class="mini">${escapeHTML(it.risks)}</div>
+            </div>
+            <div>
+              <div class="mini"><b>Minimum viable pilot</b></div>
+              <div class="mini">${escapeHTML(it.mvp)}</div>
+              <div class="hr"></div>
+              <div class="mini"><b>Suggested metrics</b></div>
+              <div class="tagRow">${it.metrics.map(m=>`<span class="tag">${escapeHTML(m)}</span>`).join("")}</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+            <div class="mini mono">Local actions (no auto-send):</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="tinyBtn" data-act="select">${isSelected ? "Unselect" : "Select"}</button>
+              <button class="tinyBtn" data-act="note">Add note</button>
+              <button class="tinyBtn" data-act="copy">Copy brief</button>
+            </div>
+          </div>
+        `;
+        d.appendChild(body);
+
+        // action buttons
+        d.addEventListener("click", async (e)=>{
+          const btn = e.target && e.target.closest && e.target.closest("button[data-act]");
+          if (!btn) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (!rateOk()) return;
+
+          const act = btn.getAttribute("data-act");
+          if (act === "select"){
+            if (selectedSet.has(it.id)) selectedSet.delete(it.id); else selectedSet.add(it.id);
+            await dbPut(STORES.kv, Array.from(selectedSet), "selected");
+            applyFilters(); // re-render tags
+          }
+          if (act === "note"){
+            await promptNoteFor(it.id, it.title);
+          }
+          if (act === "copy"){
+            const brief =
+`${it.title}
+Domain: ${it.domain}
+Horizon: ${horizonLabel(it.horizon)}
+
+Why: ${it.why}
+Risks: ${it.risks}
+MVP: ${it.mvp}
+Metrics: ${it.metrics.join(", ")}
+
+(Generated locally; verify legal/constitutional constraints and human-rights safeguards before implementation.)`;
+            try{
+              await navigator.clipboard.writeText(brief);
+              toast("Copied brief to clipboard.");
+            }catch{
+              toast("Clipboard blocked by browser. You can manually copy from the open item.");
+            }
+          }
+        });
+
+        els.bankList.appendChild(d);
+      }
+    }
+
+    /* =========================================================
+      TOOLTIP (JS): Notes prompt
+      Purpose: Attach local notes to items or sections.
+      Extend: Replace prompt() with a modal if you want richer UX.
+      Outcome: Quick capture for policy teams.
+    ========================================================== */
+    async function promptNoteFor(targetId, title){
+      const txt = prompt(`Local note for:\n${title}\n\n(Stored offline on this device only)`);
+      if (txt === null) return;
+      const clean = String(txt).slice(0, 2000); // gentle limit
+      const note = { id: `${targetId}:${Date.now()}`, targetId, title, text: clean, ts: Date.now() };
+      await dbPut(STORES.notes, note);
+      toast("Note saved locally.");
+      await refreshCounts();
+    }
+
+    /* =========================================================
+      TOOLTIP (JS): HUD + constellation
+      Purpose: Visualize progress without coercion.
+      Extend: Add more nodes or map domains to constellations.
+      Outcome: Keeps work “sticky” and satisfying.
+    ========================================================== */
+    function daysSince(ts){ return Math.floor((Date.now()-ts)/(24*3600*1000)); }
+
+    async function updateHUD(reviewedSet){
+      els.reviewedCount.textContent = String(reviewedSet.size);
+      const pct = BANK.length ? (reviewedSet.size / BANK.length) * 100 : 0;
+      els.meterFill.style.width = clamp(pct,0,100).toFixed(1) + "%";
+
+      // streak: last reviewed timestamp bucketed by day
+      const allReviewed = await dbAll(STORES.reviewed);
+      const days = new Set(allReviewed.map(r=>{
+        const d = new Date(r.ts);
+        return `${d.getUTCFullYear()}-${d.getUTCMonth()+1}-${d.getUTCDate()}`;
+      }));
+      // naive streak: count back from today
+      let streak = 0;
+      for (let i=0;i<365;i++){
+        const dt = new Date();
+        dt.setUTCDate(dt.getUTCDate()-i);
+        const key = `${dt.getUTCFullYear()}-${dt.getUTCMonth()+1}-${dt.getUTCDate()}`;
+        if (days.has(key)) streak++; else break;
+      }
+      els.streak.textContent = String(streak);
+      drawConstellation(reviewedSet.size, pct);
+    }
+
+    function drawConstellation(reviewedCount, pct){
+      const c = document.getElementById("constellation");
+      const ctx = c.getContext("2d");
+      const W = c.width, H = c.height;
+      ctx.clearRect(0,0,W,H);
+
+      // background haze
+      ctx.fillStyle = "rgba(0,0,0,.15)";
+      ctx.fillRect(0,0,W,H);
+
+      // deterministic nodes based on counts
+      const n = 18;
+      const seed = reviewedCount * 997 + Math.floor(pct*10);
+      function rand(i){
+        const x = Math.sin((seed + i) * 9999) * 10000;
+        return x - Math.floor(x);
+      }
+      const pts = [];
+      for (let i=0;i<n;i++){
+        const x = 30 + rand(i) * (W-60);
+        const y = 26 + rand(i+33) * (H-52);
+        pts.push({x,y});
+      }
+
+      // lines
+      ctx.strokeStyle = "rgba(125,211,252,.18)";
+      ctx.lineWidth = 1;
+      for (let i=0;i<pts.length;i++){
+        for (let j=i+1;j<pts.length;j++){
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120){
+            ctx.globalAlpha = (1 - dist/120) * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // nodes
+      for (let i=0;i<pts.length;i++){
+        const r = 2 + (i%3===0 ? 1.5 : 0);
+        ctx.beginPath();
+        ctx.arc(pts[i].x, pts[i].y, r, 0, Math.PI*2);
+        ctx.fillStyle = (i < Math.max(2, Math.floor(pct/6))) ? "rgba(52,211,153,.85)" : "rgba(167,139,250,.70)";
+        ctx.fill();
+      }
+
+      // label
+      ctx.fillStyle = "rgba(233,238,247,.75)";
+      ctx.font = "12px ui-monospace, Menlo, Consolas, monospace";
+      ctx.fillText(`reviewed=${reviewedCount}  progress=${pct.toFixed(1)}%`, 12, H-12);
+    }
+
+    async function refreshCounts(){
+      const notes = await dbAll(STORES.notes);
+      els.notesCount.textContent = String(notes.length);
+    }
+
+    function toast(msg){
+      // Minimal no-library toast using status text
+      els.status.textContent = msg;
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=> { els.status.textContent = "offline-ready"; }, 1600);
+    }
+
+    /* =========================================================
+      TOOLTIP (JS): Parallax
+      Purpose: Gentle motion to make long-form reading less static.
+      Extend: Add more layers with data-depth.
+      Outcome: A little cosmic “alive-ness” without heaviness.
+    ========================================================== */
+    (function parallax(){
+      const box = document.getElementById("parallaxBox");
+      if (!box) return;
+      const layers = Array.from(box.querySelectorAll(".layer"));
+      let active = false;
+
+      function move(x,y){
+        for (const l of layers){
+          const depth = parseFloat(l.dataset.depth || "0.08");
+          const tx = (x - 0.5) * 60 * depth;
+          const ty = (y - 0.5) * 60 * depth;
+          l.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+        }
+      }
+      box.addEventListener("pointerenter", ()=> active = true);
+      box.addEventListener("pointerleave", ()=> { active = false; move(0.5,0.5); });
+      box.addEventListener("pointermove", (e)=>{
+        if (!active) return;
+        const r = box.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        move(clamp(x,0,1), clamp(y,0,1));
+      });
+      move(0.5,0.5);
+    })();
+
+    /* =========================================================
+      TOOLTIP (JS): App state load/save + event wiring
+      Purpose: Persist preferences and keep UI consistent.
+      Extend: Add more preferences in kv store.
+      Outcome: Offline reliability.
+    ========================================================== */
+    let reviewedSet = new Set();
+    let selectedSet = new Set();
+
+    async function loadState(){
+      const pref = await dbGet(STORES.kv, "prefs") || { q:"", domain:"all", horizon:"all", mode:"planner" };
+      const sel = await dbGet(STORES.kv, "selected") || [];
+      selectedSet = new Set(Array.isArray(sel) ? sel : []);
+      els.q.value = pref.q || "";
+      els.domain.value = pref.domain || "all";
+      els.horizon.value = pref.horizon || "all";
+      els.modeLabel.textContent = pref.mode || "planner";
+
+      const reviewed = await dbAll(STORES.reviewed);
+      reviewedSet = new Set(reviewed.map(r=>r.id));
+      await refreshCounts();
+      await updateHUD(reviewedSet);
+    }
+
+    async function savePrefs(){
+      const prefs = {
+        q: els.q.value.slice(0,300),
+        domain: els.domain.value,
+        horizon: els.horizon.value,
+        mode: els.modeLabel.textContent || "planner",
+        ts: Date.now()
+      };
+      await dbPut(STORES.kv, prefs, "prefs");
+      toast("Saved locally.");
+    }
+
+    function applyFilters(){
+      const q = els.q.value.trim();
+      const d = els.domain.value;
+      const h = els.horizon.value;
+
+      const items = BANK.filter(it =>
+        domainMatches(it.domain, d) &&
+        horizonMatches(it.horizon, h) &&
+        textMatches(it, q)
+      );
+
+      renderBank(items, reviewedSet, selectedSet);
+      updateHUD(reviewedSet);
+    }
+
+    function wire(){
+      els.q.addEventListener("input", ()=> { if(rateOk()) applyFilters(); });
+      els.domain.addEventListener("change", ()=> { if(rateOk()) applyFilters(); });
+      els.horizon.addEventListener("change", ()=> { if(rateOk()) applyFilters(); });
+
+      els.btnSave.addEventListener("click", async ()=>{
+        if(!rateOk()) return;
+        await savePrefs();
+      });
+
+      els.btnReset.addEventListener("click", async ()=>{
+        if(!rateOk()) return;
+        const ok = confirm("Reset local data? This removes saved preferences, notes, and reviewed items (on this device only).");
+        if(!ok) return;
+        await dbClearAll();
+        reviewedSet = new Set();
+        selectedSet = new Set();
+        els.q.value = "";
+        els.domain.value = "all";
+        els.horizon.value = "all";
+        applyFilters();
+        await refreshCounts();
+        toast("Local data cleared.");
+      });
+
+      els.btnNote.addEventListener("click", async ()=>{
+        if(!rateOk()) return;
+        const anchor = location.hash ? location.hash.replace("#","") : "overview";
+        const title = SECTIONS.find(s=>s.id===anchor)?.label || "Section";
+        await promptNoteFor(`section:${anchor}`, `Section: ${title}`);
+      });
+
+      els.btnHudToggle.addEventListener("click", ()=>{
+        if(!rateOk()) return;
+        const hidden = els.hudBody.style.display === "none";
+        els.hudBody.style.display = hidden ? "" : "none";
+        els.btnHudToggle.textContent = hidden ? "Hide" : "Show";
+      });
+    }
+
+    /* =========================================================
+      TOOLTIP (JS): Boot
+      Purpose: Initialize UI, load state, render.
+      Extend: Add service worker if you later allow multi-file.
+      Outcome: One-file offline-first without external deps.
+    ========================================================== */
+    (async function init(){
+      buildDomainOptions();
+      buildTOC();
+      wire();
+      await loadState();
+      applyFilters();
+      toast("offline-ready");
+    })();
+  </script>
+</body>
+</html>
