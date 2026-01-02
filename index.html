@@ -1,0 +1,1407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>Venezuela–U.S. Drug Policy Systems Analysis Platform — Advanced Decision Intelligence</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+    
+    :root{
+      --bg: #0a0e1a; --bg-elevated: #0f1420; --surface: #141927; --surface-light: #1a2035;
+      --panel: #1e2842; --panel-hover: #252f4a; --border: #2d3a5c; --border-strong: #3d4d72;
+      --text-primary: #e8edf9; --text-secondary: #b8c5e0; --text-muted: #8594b8; --text-faint: #606d8a;
+      --data-cyan: #06b6d4; --data-blue: #3b82f6; --data-indigo: #6366f1; --data-purple: #8b5cf6;
+      --data-magenta: #d946ef; --data-teal: #14b8a6; --data-emerald: #10b981; --data-amber: #f59e0b;
+      --success: #10b981; --warning: #f59e0b; --error: #ef4444; --info: #3b82f6;
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4); --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --radius-md: 12px; --radius-lg: 16px;
+      --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'Menlo', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font-sans); line-height: 1.6; color: var(--text-primary);
+      background: radial-gradient(ellipse 1400px 900px at 20% 10%, rgba(6, 182, 212, 0.08), transparent),
+                  radial-gradient(ellipse 1200px 800px at 80% 20%, rgba(139, 92, 246, 0.06), transparent),
+                  var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Particle Canvas */
+    #particleCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.6; }
+    
+    /* Splash Screen */
+    .splash {
+      position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse 1000px 600px at 50% 40%, rgba(6, 182, 212, 0.12), transparent), rgba(10, 14, 26, 0.98);
+      animation: splashOut 0.8s ease-in-out forwards; animation-delay: 2s;
+    }
+    @keyframes splashOut { to { opacity: 0; visibility: hidden; } }
+    .splash-content { text-align: center; max-width: 600px; padding: 24px; }
+    .splash-logo {
+      width: 80px; height: 80px; margin: 0 auto 24px;
+      background: linear-gradient(135deg, var(--data-cyan), var(--data-purple));
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .splash h1 {
+      font-size: 28px; font-weight: 600; margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--data-cyan), var(--data-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .splash p { color: var(--text-secondary); font-size: 15px; margin-bottom: 32px; }
+    .progress-bar {
+      width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--data-cyan), var(--data-purple));
+      animation: progressFill 1.8s ease-out forwards;
+    }
+    @keyframes progressFill { to { width: 100%; } }
+    
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(20, 25, 39, 0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); box-shadow: var(--shadow-md);
+    }
+    .header-content {
+      max-width: 1800px; margin: 0 auto; padding: 16px 24px;
+      display: flex; align-items: center; gap: 24px; justify-content: space-between; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 16px; min-width: 280px; }
+    .brand-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--data-cyan), var(--data-indigo));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+    .brand-text h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+    .brand-text p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    
+    .nav-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .search-box { position: relative; min-width: 280px; }
+    .search-box input {
+      width: 100%; padding: 10px 16px 10px 40px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+      color: var(--text-primary); font-size: 14px; transition: all 0.2s;
+    }
+    .search-box input:focus {
+      outline: none; border-color: var(--data-cyan);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+    .search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); pointer-events: none;
+    }
+    
+    select, .btn {
+      padding: 10px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); color: var(--text-primary); font-size: 14px;
+      font-family: var(--font-sans); cursor: pointer; transition: all 0.2s;
+    }
+    select { appearance: none; padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238594b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .btn:hover, select:hover { background: var(--surface-light); border-color: var(--border-strong); transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--data-cyan), var(--data-blue));
+      border-color: transparent; color: white; box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+    
+    /* Layout */
+    .main-container {
+      position: relative; z-index: 1; max-width: 1800px; margin: 0 auto; padding: 24px;
+      display: grid; grid-template-columns: 280px 1fr 350px; gap: 24px;
+    }
+    
+    /* Sidebar Left */
+    .sidebar-left {
+      position: sticky; top: 100px; height: fit-content; max-height: calc(100vh - 120px);
+      overflow-y: auto; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-md);
+    }
+    .toc-header {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .toc-list { display: flex; flex-direction: column; gap: 4px; }
+    .toc-item {
+      display: block; padding: 10px 12px; color: var(--text-secondary);
+      text-decoration: none; font-size: 14px; border-radius: 8px; transition: all 0.2s;
+    }
+    .toc-item:hover { background: var(--surface-light); color: var(--text-primary); transform: translateX(4px); }
+    .toc-item.active {
+      background: rgba(6, 182, 212, 0.1); color: var(--data-cyan); font-weight: 500;
+      position: relative;
+    }
+    .toc-item.active::before {
+      content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 60%; background: var(--data-cyan); border-radius: 2px;
+    }
+    
+    /* Main Content */
+    .content-main { min-width: 0; }
+    .section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px;
+      box-shadow: var(--shadow-md); animation: slideInUp 0.6s ease-out backwards;
+    }
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .section-header {
+      display: flex; justify-content: space-between; margin-bottom: 24px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .section-title { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .section-subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    
+    .badge {
+      padding: 6px 12px; background: var(--surface-light); border: 1px solid var(--border);
+      border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-secondary);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success); }
+    .badge-warning { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: var(--warning); }
+    .badge-info { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: var(--info); }
+    
+    /* Alert */
+    .alert {
+      padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid;
+      margin: 20px 0; background: var(--surface-light);
+    }
+    .alert-info { border-left-color: var(--info); background: rgba(59, 130, 246, 0.05); }
+    .alert-warning { border-left-color: var(--warning); background: rgba(245, 158, 11, 0.05); }
+    .alert-success { border-left-color: var(--success); background: rgba(16, 185, 129, 0.05); }
+    .alert-title { font-weight: 600; margin-bottom: 8px; }
+    .alert-body { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+    
+    /* Grids */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    
+    /* Metric Cards */
+    .metric-card {
+      background: var(--surface-light); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 20px; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .metric-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+    .metric-label {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 28px; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 4px; font-family: var(--font-mono);
+    }
+    .metric-change { font-size: 13px; color: var(--text-muted); }
+    
+    /* Details */
+    details {
+      background: var(--surface-light); border: 1px solid var(--border);
+      border-radius: var(--radius-md); margin: 16px 0; overflow: hidden; transition: all 0.3s;
+    }
+    details[open] { border-color: var(--border-strong); }
+    summary {
+      padding: 16px 20px; cursor: pointer; list-style: none;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: 500; transition: all 0.2s;
+    }
+    summary:hover { background: rgba(255, 255, 255, 0.02); }
+    summary::marker, summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '▼'; font-size: 12px; color: var(--text-muted); transition: transform 0.3s;
+    }
+    details[open] summary::after { transform: rotate(180deg); }
+    .details-content {
+      padding: 0 20px 20px 20px; border-top: 1px solid var(--border);
+      animation: expandDown 0.3s ease-out;
+    }
+    @keyframes expandDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Sidebar Right */
+    .sidebar-right {
+      position: sticky; top: 100px; height: fit-content;
+      max-height: calc(100vh - 120px); overflow-y: auto;
+    }
+    .hud-panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    .hud-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .hud-title { font-size: 14px; font-weight: 600; }
+    .mini-btn {
+      padding: 4px 10px; font-size: 12px; background: var(--surface-light);
+      border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    }
+    .mini-btn:hover { background: var(--panel); color: var(--text-primary); }
+    
+    /* Canvases */
+    .graph-container {
+      width: 100%; height: 250px; background: var(--bg-elevated);
+      border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden;
+    }
+    .graph-canvas { width: 100%; height: 100%; display: block; }
+    
+    /* Progress */
+    .progress-container { margin: 12px 0; }
+    .progress-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px; font-size: 13px;
+    }
+    .progress-label { color: var(--text-secondary); }
+    .progress-value { color: var(--text-primary); font-weight: 600; font-family: var(--font-mono); }
+    .progress-track {
+      width: 100%; height: 8px; background: var(--surface-light);
+      border-radius: 4px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--data-cyan), var(--data-purple));
+      border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Tables */
+    .data-table {
+      width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+    }
+    .data-table thead { background: var(--surface-light); }
+    .data-table th {
+      padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 14px 16px; font-size: 14px; color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table tbody tr { transition: all 0.2s; }
+    .data-table tbody tr:hover { background: var(--surface-light); }
+    
+    /* Lists */
+    ul, ol { margin: 16px 0; padding-left: 24px; color: var(--text-secondary); }
+    li { margin: 8px 0; line-height: 1.6; }
+    li::marker { color: var(--data-cyan); }
+    
+    /* Code */
+    pre {
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 16px; overflow-x: auto;
+      font-family: var(--font-mono); font-size: 13px; margin: 16px 0;
+    }
+    code {
+      font-family: var(--font-mono); font-size: 13px;
+      background: var(--surface-light); padding: 2px 6px;
+      border-radius: 4px; color: var(--data-cyan);
+    }
+    pre code { background: none; padding: 0; }
+    
+    /* Footer */
+    footer {
+      position: relative; z-index: 1; max-width: 1800px; margin: 48px auto 0;
+      padding: 32px 24px; border-top: 1px solid var(--border);
+    }
+    .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+    .footer-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .footer-section p, .footer-section li { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-bottom p { font-size: 12px; color: var(--text-muted); }
+    
+    /* Links */
+    a { color: var(--data-cyan); text-decoration: none; transition: all 0.2s; }
+    a:hover { color: var(--data-blue); text-decoration: underline; }
+    
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .main-container { grid-template-columns: 1fr 320px; }
+      .sidebar-left { display: none; }
+    }
+    @media (max-width: 1024px) {
+      .main-container { grid-template-columns: 1fr; }
+      .sidebar-right { position: relative; top: auto; max-height: none; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .footer-content { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; align-items: stretch; }
+      .nav-controls { flex-direction: column; }
+      .search-box { min-width: 0; }
+      .section { padding: 20px; }
+    }
+    
+    /* Utilities */
+    .mt-2 { margin-top: 16px; } .mb-2 { margin-bottom: 16px; }
+    .text-small { font-size: 13px; } .text-muted { color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  
+  <!-- Particle Background -->
+  <canvas id="particleCanvas" aria-hidden="true"></canvas>
+  
+  <!-- Splash Screen -->
+  <div class="splash" id="splash">
+    <div class="splash-content">
+      <div class="splash-logo">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+          <path d="M2 17L12 22L22 17"/>
+          <path d="M2 12L12 17L22 12"/>
+        </svg>
+      </div>
+      <h1>Advanced Policy Systems Platform</h1>
+      <p>Loading sophisticated analytical frameworks, network models, and predictive intelligence for evidence-based drug policy coordination.</p>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+    </div>
+  </div>
+  
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+            <path d="M2 17L12 22L22 17"/>
+            <path d="M2 12L12 17L22 12"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Venezuela–U.S. Drug Policy Systems Analysis Platform</h1>
+          <p>Advanced Decision Intelligence | Systems Thinking | Implementation Science</p>
+        </div>
+      </div>
+      
+      <nav class="nav-controls">
+        <div class="search-box">
+          <svg class="search-icon" width="16" height="16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M11 11L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="searchInput" placeholder="Search interventions, frameworks, metrics..."/>
+        </div>
+        
+        <select id="domainFilter"><option value="all">All Domains</option></select>
+        <select id="horizonFilter">
+          <option value="all">All Horizons</option>
+          <option value="0-90">0–90 days</option>
+          <option value="3-12">3–12 months</option>
+          <option value="1-3">1–3 years</option>
+        </select>
+        
+        <button class="btn" id="saveBtn">💾 Save</button>
+        <button class="btn btn-primary" id="exportBtn">📥 Export</button>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Main Container -->
+  <div class="main-container">
+    
+    <!-- Left Sidebar TOC -->
+    <aside class="sidebar-left">
+      <div class="toc-header">Navigation</div>
+      <nav class="toc-list" id="tocList"></nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="content-main">
+      
+      <!-- Executive Overview -->
+      <section class="section" id="executive-overview">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Executive Overview: Systems-Level Drug Policy Analysis</h2>
+            <p class="section-subtitle">
+              A PhD+ framework integrating complexity science, institutional economics, network theory, and implementation science to address the Venezuela-U.S. drug crisis through evidence-based, adaptive policy portfolios.
+            </p>
+          </div>
+          <div><span class="badge badge-info">Live Analysis</span></div>
+        </div>
+        
+        <div class="alert alert-warning">
+          <div class="alert-title">⚠️ Critical Recognition: This Is Not A Technical Problem</div>
+          <div class="alert-body">
+            The drug crisis is fundamentally a <strong>complex adaptive system</strong> where interventions create feedback loops, actors adapt strategically, and "solutions" often generate unintended consequences. Success requires understanding <strong>systems dynamics, political economy, institutional capacity, and human behavior</strong>—not just deploying more enforcement or treatment in isolation.
+          </div>
+        </div>
+        
+        <div class="grid-3">
+          <div class="metric-card">
+            <div class="metric-label">North Star Metric</div>
+            <div class="metric-value">Deaths ↓</div>
+            <div class="metric-change">Reduce overdose mortality, violence, and systemic harm</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-label">Strategic Approach</div>
+            <div class="metric-value">Portfolios</div>
+            <div class="metric-change">Not silver bullets—coordinated, testable intervention bundles</div>
+          </div>
+          
+          <div class="metric-card">
+            <div class="metric-label">Core Principle</div>
+            <div class="metric-value">Adaptive</div>
+            <div class="metric-change">Pre-registered experiments with stop/scale/modify rules</div>
+          </div>
+        </div>
+        
+        <h3 style="margin-top: 24px; margin-bottom: 16px;">What Makes This Framework Different</h3>
+        
+        <details open>
+          <summary>🧠 Systems Thinking & Complexity Science</summary>
+          <div class="details-content">
+            <p><strong>Why most drug policy fails:</strong> Linear thinking applied to non-linear systems. Traditional approaches assume:</p>
+            <ul>
+              <li>More enforcement → less supply → less use (ignores price elasticity, substitution effects, market adaptation)</li>
+              <li>More treatment beds → less addiction (ignores access barriers, continuity gaps, social determinants)</li>
+              <li>Bilateral agreements → cooperation (ignores political economy, institutional capacity, trust deficits)</li>
+            </ul>
+            <p class="mt-2"><strong>This framework recognizes:</strong></p>
+            <ul>
+              <li><strong>Feedback loops:</strong> Enforcement can increase violence (market competition), increase potency (size-to-value ratio), and shift to deadlier substances</li>
+              <li><strong>Emergence:</strong> System behavior arises from interactions, not individual components</li>
+              <li><strong>Adaptation:</strong> Traffickers, officials, and users respond strategically to interventions</li>
+              <li><strong>Path dependence:</strong> History matters—institutional capacity and trust take years to build</li>
+            </ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary>🎯 Implementation Science & Political Economy</summary>
+          <div class="details-content">
+            <p><strong>The "knowing-doing gap":</strong> Evidence-based policies often fail not because they're wrong, but because:</p>
+            <ul>
+              <li><strong>Institutional capture:</strong> Corruption, rent-seeking, and vested interests undermine implementation</li>
+              <li><strong>Capacity constraints:</strong> Lack of trained personnel, infrastructure, systems</li>
+              <li><strong>Political incentives:</strong> Short-term electoral cycles vs. long-term reform needs</li>
+              <li><strong>Coordination failures:</strong> Multiple agencies, jurisdictions, nations with misaligned goals</li>
+            </ul>
+            <p class="mt-2"><strong>This framework provides:</strong></p>
+            <ul>
+              <li><strong>Political economy diagnostics:</strong> Map veto players, incentive structures, power dynamics</li>
+              <li><strong>Institutional capacity assessments:</strong> Measure readiness before deploying interventions</li>
+              <li><strong>Anti-corruption scaffolding:</strong> Built-in integrity systems, not afterthoughts</li>
+              <li><strong>Adaptive implementation:</strong> Real-time monitoring with clear stop/scale rules</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+      
+      <!-- Critical Questions -->
+      <section class="section" id="critical-questions">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Critical Questions Policy Makers Aren't Asking</h2>
+            <p class="section-subtitle">The most important questions are often the ones we forget to ask. These blind spots lead to predictable failures.</p>
+          </div>
+        </div>
+        
+        <div class="alert alert-info">
+          <div class="alert-title">💡 Meta-Question</div>
+          <div class="alert-body">
+            <strong>What questions should we be asking that we're not?</strong> This section systematically explores second-order effects, feedback loops, perverse incentives, and institutional dynamics that typical policy frameworks miss.
+          </div>
+        </div>
+        
+        <h3 class="mt-2">1. Systems Dynamics & Feedback Loops</h3>
+        
+        <details open>
+          <summary>🔄 How will the system adapt to our interventions?</summary>
+          <div class="details-content">
+            <p><strong>The adaptation problem:</strong> Drug markets are <em>anti-fragile</em>—they grow stronger from disruption. Every intervention triggers strategic responses:</p>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Intervention</th>
+                  <th>Intended Effect</th>
+                  <th>Likely Adaptations</th>
+                  <th>Mitigation Strategy</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Port seizures increase</td>
+                  <td>Reduce supply</td>
+                  <td>Route diversification, corruption of new ports, shift to air/land</td>
+                  <td>Regional coordination, port integrity systems, real-time intelligence sharing</td>
+                </tr>
+                <tr>
+                  <td>Heroin crackdown</td>
+                  <td>Reduce opioid deaths</td>
+                  <td>Shift to fentanyl (deadlier, easier to smuggle)</td>
+                  <td>Harm reduction (naloxone, testing), treatment scale-up, precursor controls</td>
+                </tr>
+                <tr>
+                  <td>Kingpin arrests</td>
+                  <td>Disrupt trafficking</td>
+                  <td>Fragmentation → more violence, new leadership from prison</td>
+                  <td>Network-based targeting (not just leaders), violence prevention, economic alternatives</td>
+                </tr>
+                <tr>
+                  <td>Bank AML compliance</td>
+                  <td>Stop money laundering</td>
+                  <td>Crypto, trade-based laundering, shell companies</td>
+                  <td>Multi-vector approach, beneficial ownership transparency, informal sector monitoring</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <p class="mt-2"><strong>Key principle:</strong> Design portfolios that <em>anticipate adaptation</em> and include counter-moves. Single-vector interventions always fail against adaptive adversaries.</p>
+          </div>
+        </details>
+        
+        <details>
+          <summary>⚖️ What are the unintended consequences we're not modeling?</summary>
+          <div class="details-content">
+            <p><strong>Unintended consequences toolkit:</strong></p>
+            <ul>
+              <li><strong>Balloon effect:</strong> Suppression in one area → growth elsewhere (geography, substance type, market segment)</li>
+              <li><strong>Substitution cascade:</strong> Intervention on substance X → users/traffickers switch to Y (often deadlier)</li>
+              <li><strong>Market concentration:</strong> Removing small players → monopolization → higher violence, corruption</li>
+              <li><strong>Stigma amplification:</strong> Punitive approaches → reduced treatment seeking → hidden epidemics</li>
+              <li><strong>Institutional strain:</strong> Rapid scale-up → capacity collapse, corruption, poor quality</li>
+              <li><strong>Political backlash:</strong> Visible enforcement without visible treatment → "war on drug users" narrative</li>
+            </ul>
+            
+            <div class="alert alert-warning mt-2">
+              <div class="alert-title">🎯 Consequence Mapping Protocol</div>
+              <div class="alert-body">
+                For every proposed intervention, systematically map:
+                <ol style="margin-top: 8px;">
+                  <li><strong>Direct effects:</strong> What changes immediately?</li>
+                  <li><strong>Actor responses:</strong> How do traffickers, users, officials, communities adapt?</li>
+                  <li><strong>Second-order effects:</strong> What happens 6-12 months later as adaptations cascade?</li>
+                  <li><strong>System-wide impacts:</strong> Effects on violence, corruption, public health, economy</li>
+                  <li><strong>Mitigation requirements:</strong> What complementary interventions prevent worst outcomes?</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </details>
+        
+        <h3 class="mt-2">2. Political Economy & Institutional Capture</h3>
+        
+        <details>
+          <summary>💰 Who benefits from the status quo, and how do we navigate their resistance?</summary>
+          <div class="details-content">
+            <p><strong>The political economy reality:</strong> Drug policy is not just about reducing harm—it's about redistributing power and resources away from entrenched interests.</p>
+            
+            <h4 style="margin-top: 16px; margin-bottom: 8px;">Beneficiaries of the Status Quo (Veto Players)</h4>
+            
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Actor</th>
+                  <th>How They Benefit</th>
+                  <th>Resistance Strategy</th>
+                  <th>Navigation Approach</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Corrupt officials</td>
+                  <td>Bribes, extortion, career advancement</td>
+                  <td>Obstruction, information warfare, retaliation</td>
+                  <td>Rotations, independent oversight, protected reporting, targeted prosecution</td>
+                </tr>
+                <tr>
+                  <td>Politicians</td>
+                  <td>Funding, votes from "tough on crime" stance</td>
+                  <td>Blocking reform, defunding, rhetorical attacks</td>
+                  <td>Coalition building, data transparency, electoral incentives for outcomes</td>
+                </tr>
+                <tr>
+                  <td>Enforcement bureaucracies</td>
+                  <td>Budgets, prestige, organizational survival</td>
+                  <td>Mission creep, data manipulation, turf battles</td>
+                  <td>Mission clarity, outcome-based funding, inter-agency coordination requirements</td>
+                </tr>
+                <tr>
+                  <td>Trafficking organizations</td>
+                  <td>Profits, power, territorial control</td>
+                  <td>Violence, corruption, adaptation</td>
+                  <td>Economic alternatives, network disruption, violence prevention</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+      
+      <!-- Solution Bank -->
+      <section class="section" id="solution-bank">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Comprehensive Solution Bank</h2>
+            <p class="section-subtitle">Filterable, evidence-graded interventions across all policy domains</p>
+          </div>
+          <div><span class="badge" id="itemCount">Loading...</span></div>
+        </div>
+        
+        <div id="bankContainer"></div>
+      </section>
+      
+      <!-- Implementation -->
+      <section class="section" id="implementation">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Implementation Playbooks</h2>
+            <p class="section-subtitle">Step-by-step guides for launching, monitoring, and adapting interventions</p>
+          </div>
+        </div>
+        
+        <details open>
+          <summary>📋 90-Day Launch Protocol</summary>
+          <div class="details-content">
+            <h4>For Any New Intervention</h4>
+            
+            <h5 class="mt-2">Week 1-2: Design & Preparation</h5>
+            <ul>
+              <li>Complete institutional capacity scorecard</li>
+              <li>Map political economy (stakeholders, veto players, champions)</li>
+              <li>Define clear, measurable success criteria (pre-register publicly)</li>
+              <li>Identify risks and build mitigation plans</li>
+              <li>Establish data collection systems and baseline measurements</li>
+            </ul>
+            
+            <h5 class="mt-2">Week 3-4: Anti-Corruption Scaffolding</h5>
+            <ul>
+              <li>Install oversight mechanisms (rotations, audits, whistleblower channels)</li>
+              <li>Conduct red team exercise (simulate corruption scenarios, test defenses)</li>
+              <li>Establish independent verification protocol</li>
+              <li>Create public dashboard (even if data is preliminary)</li>
+            </ul>
+            
+            <h5 class="mt-2">Week 5-8: Pilot Launch</h5>
+            <ul>
+              <li>Start small (1-2 geographic areas or populations)</li>
+              <li>Over-resource the pilot (better to succeed small than fail big)</li>
+              <li>Daily monitoring for first 2 weeks, then weekly</li>
+              <li>Rapid problem-solving team on call</li>
+            </ul>
+            
+            <h5 class="mt-2">Week 9-12: Evaluation & Decision</h5>
+            <ul>
+              <li>Compare outcomes to pre-registered success criteria</li>
+              <li>Conduct rapid evaluation (internal + external reviewer)</li>
+              <li>Identify unintended consequences</li>
+              <li><strong>Decision point:</strong> Stop (failed), Scale (succeeded), Modify (partially successful)</li>
+              <li>Public reporting (outcomes, costs, lessons learned)</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+      
+    </main>
+    
+    <!-- Right Sidebar -->
+    <aside class="sidebar-right">
+      
+      <div class="hud-panel">
+        <div class="hud-header">
+          <span class="hud-title">Portfolio Builder</span>
+          <button class="mini-btn" id="clearPortfolio">Clear</button>
+        </div>
+        <div id="portfolioContent">
+          <p class="text-small text-muted">Select interventions to build a custom portfolio.</p>
+          <div id="selectedItems" class="mt-2"></div>
+        </div>
+      </div>
+      
+      <div class="hud-panel">
+        <div class="hud-header">
+          <span class="hud-title">Network Visualizer</span>
+          <button class="mini-btn" id="toggleNetwork">Simulate</button>
+        </div>
+        <div class="graph-container">
+          <canvas class="graph-canvas" id="networkCanvas"></canvas>
+        </div>
+      </div>
+      
+      <div class="hud-panel">
+        <div class="hud-header">
+          <span class="hud-title">Session Progress</span>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <span class="progress-label">Sections Reviewed</span>
+            <span class="progress-value" id="sectionsReviewed">0/4</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="sectionProgress" style="width: 0%;"></div>
+          </div>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <span class="progress-label">Interventions Explored</span>
+            <span class="progress-value" id="interventionsExplored">0/12</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="interventionProgress" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+      
+    </aside>
+    
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Zero-Harm & Anti-Coercion Commitment</h3>
+        <p>
+          This platform is designed exclusively to reduce harm, save lives, and strengthen democratic institutions. 
+          It explicitly rejects and does not facilitate: surveillance for political persecution, rights violations, 
+          coercion, manipulation, or any form of targeted harassment.
+        </p>
+        <p class="mt-2">
+          <strong>Privacy & Data:</strong> All analytics are local-only, user-controlled, and resettable. No automatic 
+          data transmission. No hidden telemetry. No third-party tracking.
+        </p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Technical Notes</h3>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li>Particle system: Canvas 2D API</li>
+          <li>Network graphs: Custom Canvas</li>
+          <li>Data persistence: IndexedDB</li>
+          <li>Export: JSON/CSV options</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Methodological Foundations</h3>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+          <li>Systems dynamics (Forrester, Meadows)</li>
+          <li>Implementation science (Fixsen, Damschroder)</li>
+          <li>Network theory (Barabási, Watts)</li>
+          <li>Institutional economics (North, Ostrom)</li>
+          <li>Causal inference (Pearl, Imbens)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Advanced Drug Policy Systems Analysis Platform. Open methodologies, transparent algorithms, human rights-centered design.</p>
+    </div>
+  </footer>
+
+  
+  <script>
+    // Particle System
+    (function initParticles() {
+      const canvas = document.getElementById('particleCanvas');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.3;
+          this.vy = (Math.random() - 0.5) * 0.3;
+          this.radius = Math.random() * 1.5 + 0.5;
+          this.opacity = Math.random() * 0.5 + 0.2;
+          this.color = ['#06b6d4', '#3b82f6', '#8b5cf6', '#10b981'][Math.floor(Math.random() * 4)];
+        }
+        
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0) this.x = canvas.width;
+          if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height;
+          if (this.y > canvas.height) this.y = 0;
+        }
+        
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.globalAlpha = this.opacity;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+      
+      const particleCount = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 100) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = particles[i].color;
+              ctx.globalAlpha = (1 - distance / 100) * 0.15;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+              ctx.globalAlpha = 1;
+            }
+          }
+          
+          particles[i].draw();
+        }
+        
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    })();
+    
+    // TOC Generation
+    (function generateTOC() {
+      const sections = [
+        { id: 'executive-overview', title: 'Executive Overview' },
+        { id: 'critical-questions', title: 'Critical Questions' },
+        { id: 'solution-bank', title: 'Solution Bank' },
+        { id: 'implementation', title: 'Implementation' }
+      ];
+      
+      const tocList = document.getElementById('tocList');
+      if (!tocList) return;
+      
+      sections.forEach(section => {
+        const link = document.createElement('a');
+        link.href = `#${section.id}`;
+        link.className = 'toc-item';
+        link.textContent = section.title;
+        
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                document.querySelectorAll('.toc-item').forEach(item => item.classList.remove('active'));
+                link.classList.add('active');
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+        
+        const sectionElement = document.getElementById(section.id);
+        if (sectionElement) observer.observe(sectionElement);
+        
+        tocList.appendChild(link);
+      });
+    })();
+    
+    // Solution Bank Data
+    const DOMAINS = [
+      'Demand & Health', 'Supply Disruption', 'Finance & Anti-Corruption',
+      'Livelihoods & Transition', 'Bilateral Diplomacy', 'Regional & Global'
+    ];
+    
+    const INTERVENTIONS = [
+      {
+        id: 'DH-01',
+        title: 'Rapid overdose response scale-up (naloxone, EMS protocols, community distribution)',
+        domain: 'Demand & Health',
+        horizon: '0-90',
+        evidence: 'Strong',
+        why: 'Overdose deaths respond quickly to access + training + consistent protocols; buys time for deeper reforms.',
+        risks: 'Uneven coverage; stigma; supply volatility can outpace response capacity.',
+        mvp: 'Map hotspots; distribute naloxone via clinics/pharmacies/community partners; train first responders + peers; standardize post-overdose care linkage.',
+        metrics: ['overdose deaths', 'nonfatal overdoses', 'naloxone reversals', 'time-to-treatment referral']
+      },
+      {
+        id: 'DH-02',
+        title: 'Low-barrier treatment access (same-day initiation, continuity of care)',
+        domain: 'Demand & Health',
+        horizon: '0-90',
+        evidence: 'Very Strong',
+        why: 'Reducing friction increases uptake; continuity reduces relapse risk and chaotic use patterns.',
+        risks: 'Workforce bottlenecks; medication supply constraints; fragmented records.',
+        mvp: 'Same-day intake; bridge prescriptions; warm handoffs; mobile outreach; continuity after incarceration/hospitalization.',
+        metrics: ['treatment initiation <7 days', '30/90-day retention', 'post-release linkage rate']
+      },
+      {
+        id: 'SD-01',
+        title: 'Focus on high-lethality nodes (labs, adulteration points, fentanyl analog clusters)',
+        domain: 'Supply Disruption',
+        horizon: '0-90',
+        evidence: 'Moderate',
+        why: 'Targeting the most lethal supply segments yields faster mortality reduction than low-signal mass operations.',
+        risks: 'Displacement to new nodes; intelligence gaps; corruption exposure.',
+        mvp: 'Joint analytic cell to identify lethality clusters; prioritize seizures that remove high-risk batches; protect data integrity.',
+        metrics: ['lethal-batch seizures', 'overdose spikes', 'adulterant signals', 'case integrity audits']
+      },
+      {
+        id: 'SD-02',
+        title: 'Precursor chemical controls + diversion detection (transparent licensing, audits, red-flag analytics)',
+        domain: 'Supply Disruption',
+        horizon: '3-12',
+        evidence: 'Moderate-Strong',
+        why: 'Synthetic drug supply is constrained by precursor availability and diversion pathways.',
+        risks: 'Legitimate industry burden; corruption at licensing points; black-market substitution.',
+        mvp: 'License registry; audit schedule; red-flag triggers; penalties for diversion + protections for compliant firms.',
+        metrics: ['diversion incidents', 'audit findings', 'precursor anomalies', 'time-to-enforcement action']
+      },
+      {
+        id: 'FA-01',
+        title: 'Beneficial ownership transparency + shell-company disruption',
+        domain: 'Finance & Anti-Corruption',
+        horizon: '3-12',
+        evidence: 'Strong',
+        why: 'Drug markets are businesses; money laundering is the circulatory system.',
+        risks: 'Elite resistance; regulatory loopholes; cross-border complexity.',
+        mvp: 'Beneficial ownership register; verification sampling; suspicious transaction coordination; targeted enforcement on facilitators.',
+        metrics: ['verified owners %', 'SAR quality', 'asset freezes', 'facilitator prosecutions']
+      },
+      {
+        id: 'FA-02',
+        title: 'Integrity pacts for procurement + rotations for high-risk posts + protected reporting',
+        domain: 'Finance & Anti-Corruption',
+        horizon: '0-90',
+        evidence: 'Moderate-Strong',
+        why: 'Procurement and postings are classic capture points; integrity scaffolds reduce easy corruption.',
+        risks: 'Institutional resistance; whistleblower retaliation.',
+        mvp: 'Integrity pacts on major contracts; rotation rules; anonymous reporting; independent triage + follow-up SLA.',
+        metrics: ['procurement anomalies', 'time-to-investigation', 'retaliation claims', 'rotation compliance']
+      },
+      {
+        id: 'LT-01',
+        title: 'Cash-for-work + infrastructure stabilization in high-recruitment communities',
+        domain: 'Livelihoods & Transition',
+        horizon: '0-90',
+        evidence: 'Moderate',
+        why: 'Immediate lawful income reduces recruitment pressure and stabilizes households.',
+        risks: 'Leakage/corruption; short-termism; dependency.',
+        mvp: 'Targeted public works; transparent payroll; community oversight; tie-ins to skills certification.',
+        metrics: ['jobs created', 'payroll integrity', 'school attendance', 'recruitment indicators']
+      },
+      {
+        id: 'LT-02',
+        title: 'Legal value chains (agro-processing, logistics, fisheries, renewables micro-infrastructure)',
+        domain: 'Livelihoods & Transition',
+        horizon: '1-3',
+        evidence: 'Moderate',
+        why: 'Long-run recruitment shrinks when legal markets are competitive and reliable.',
+        risks: 'Market access; supply chain fragility; rent-seeking.',
+        mvp: 'Select 2–3 scalable sectors; remove bottlenecks; microfinance with anti-fraud; export facilitation with integrity controls.',
+        metrics: ['SME survival', 'exports', 'income stability', 'corruption complaints']
+      },
+      {
+        id: 'BD-01',
+        title: 'Joint verification-first cooperation cell (shared objectives, bounded scope, independent audits)',
+        domain: 'Bilateral Diplomacy',
+        horizon: '0-90',
+        evidence: 'Weak-Moderate',
+        why: 'Cooperation survives politics when scope is narrow, verifiable, and mutually dignifying.',
+        risks: 'Mistrust; politicization; intelligence misuse fears.',
+        mvp: 'Define 3 shared targets: reduce deaths, reduce port/customs corruption, reduce money laundering facilitators; publish high-level metrics.',
+        metrics: ['joint milestones met', 'audit results', 'incident response time', 'public confidence trend']
+      },
+      {
+        id: 'BD-02',
+        title: 'Sanctions calibration tied to anti-corruption + humanitarian outcomes (clear triggers, reversible steps)',
+        domain: 'Bilateral Diplomacy',
+        horizon: '3-12',
+        evidence: 'Weak',
+        why: 'Incentives matter; clear, measurable triggers reduce ambiguity and increase compliance likelihood.',
+        risks: 'Domestic backlash; misinterpretation; gaming metrics.',
+        mvp: 'Define triggers (audit pass rates, integrity rotations, treatment expansion) and corresponding relief steps; build independent verification.',
+        metrics: ['trigger achievement', 'verification disputes', 'humanitarian indicators', 'corruption indicators']
+      },
+      {
+        id: 'RG-01',
+        title: 'Caribbean & regional route coordination (ports, coast guards, customs integrity sharing)',
+        domain: 'Regional & Global',
+        horizon: '3-12',
+        evidence: 'Moderate',
+        why: 'Trafficking routes shift; regional coordination reduces displacement effects.',
+        risks: 'Uneven capacity; corruption spillover; jurisdiction gaps.',
+        mvp: 'Shared risk advisories; port integrity standards; training; rotating joint inspections with independent observers.',
+        metrics: ['route disruption signals', 'integrity audits', 'seizure-to-harm ratio', 'capacity growth']
+      },
+      {
+        id: 'RG-02',
+        title: 'Public health data interoperability for overdose surveillance (privacy-preserving aggregation)',
+        domain: 'Regional & Global',
+        horizon: '0-90',
+        evidence: 'Strong',
+        why: 'Fast detection of spikes enables targeted response; aggregated data reduces privacy risk.',
+        risks: 'Data misuse fears; fragmentation; underreporting.',
+        mvp: 'Agree minimum dataset; aggregate by region/time; publish alerts; ensure privacy controls and oversight.',
+        metrics: ['reporting latency', 'alert-to-action time', 'coverage', 'false positives/negatives']
+      }
+    ];
+    
+    // Populate domain filter
+    (function populateDomainFilter() {
+      const select = document.getElementById('domainFilter');
+      if (!select) return;
+      
+      DOMAINS.forEach(domain => {
+        const option = document.createElement('option');
+        option.value = domain;
+        option.textContent = domain;
+        select.appendChild(option);
+      });
+    })();
+    
+    // Render solution bank
+    (function renderSolutionBank() {
+      const container = document.getElementById('bankContainer');
+      const itemCount = document.getElementById('itemCount');
+      if (!container || !itemCount) return;
+      
+      let selectedInterventions = new Set();
+      
+      function render(items = INTERVENTIONS) {
+        container.innerHTML = '';
+        itemCount.textContent = `${items.length} interventions`;
+        
+        items.forEach(item => {
+          const card = document.createElement('details');
+          card.style.marginBottom = '16px';
+          
+          const summary = document.createElement('summary');
+          summary.innerHTML = `
+            <div style="flex: 1;">
+              <strong style="font-size: 15px;">${item.title}</strong>
+              <div style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <span class="badge badge-${item.evidence.includes('Strong') ? 'success' : 'info'}">${item.evidence} Evidence</span>
+                <span class="badge">${item.horizon.replace('-', '–')} days</span>
+                <span class="badge">${item.domain}</span>
+              </div>
+            </div>
+          `;
+          
+          const content = document.createElement('div');
+          content.className = 'details-content';
+          content.innerHTML = `
+            <div class="grid-2" style="margin-bottom: 16px;">
+              <div>
+                <h5 style="margin: 0 0 8px 0; font-size: 13px;">Why This Works</h5>
+                <p style="font-size: 14px; color: var(--text-secondary);">${item.why}</p>
+              </div>
+              <div>
+                <h5 style="margin: 0 0 8px 0; font-size: 13px;">Risks & Failure Modes</h5>
+                <p style="font-size: 14px; color: var(--text-secondary);">${item.risks}</p>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+              <h5 style="margin: 0 0 8px 0; font-size: 13px;">Minimum Viable Pilot</h5>
+              <p style="font-size: 14px; color: var(--text-secondary);">${item.mvp}</p>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+              <h5 style="margin: 0 0 8px 0; font-size: 13px;">Key Metrics</h5>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                ${item.metrics.map(m => `<span class="badge">${m}</span>`).join('')}
+              </div>
+            </div>
+            
+            <button class="btn" onclick="window.toggleSelection('${item.id}')">
+              ${selectedInterventions.has(item.id) ? '✓ Added' : '+ Add to Portfolio'}
+            </button>
+          `;
+          
+          card.appendChild(summary);
+          card.appendChild(content);
+          container.appendChild(card);
+        });
+      }
+      
+      function applyFilters() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const domain = document.getElementById('domainFilter').value;
+        const horizon = document.getElementById('horizonFilter').value;
+        
+        const filtered = INTERVENTIONS.filter(item => {
+          const matchesQuery = !query || 
+            item.title.toLowerCase().includes(query) ||
+            item.domain.toLowerCase().includes(query);
+          const matchesDomain = domain === 'all' || item.domain === domain;
+          const matchesHorizon = horizon === 'all' || item.horizon === horizon;
+          return matchesQuery && matchesDomain && matchesHorizon;
+        });
+        
+        render(filtered);
+      }
+      
+      document.getElementById('searchInput').addEventListener('input', applyFilters);
+      document.getElementById('domainFilter').addEventListener('change', applyFilters);
+      document.getElementById('horizonFilter').addEventListener('change', applyFilters);
+      
+      window.toggleSelection = function(id) {
+        if (selectedInterventions.has(id)) {
+          selectedInterventions.delete(id);
+        } else {
+          selectedInterventions.add(id);
+        }
+        updatePortfolio();
+        applyFilters();
+      };
+      
+      function updatePortfolio() {
+        const selectedItems = document.getElementById('selectedItems');
+        if (!selectedItems) return;
+        
+        if (selectedInterventions.size === 0) {
+          selectedItems.innerHTML = '<p class="text-small text-muted">No interventions selected.</p>';
+          return;
+        }
+        
+        selectedItems.innerHTML = '';
+        selectedInterventions.forEach(id => {
+          const item = INTERVENTIONS.find(i => i.id === id);
+          if (!item) return;
+          
+          const div = document.createElement('div');
+          div.className = 'metric-card';
+          div.style.marginBottom = '8px';
+          div.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+              <div style="flex: 1;">
+                <div class="metric-label">${item.id}</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">${item.domain}</div>
+              </div>
+              <button class="mini-btn" onclick="window.toggleSelection('${item.id}')">×</button>
+            </div>
+          `;
+          selectedItems.appendChild(div);
+        });
+      }
+      
+      document.getElementById('clearPortfolio').addEventListener('click', () => {
+        selectedInterventions.clear();
+        updatePortfolio();
+        applyFilters();
+      });
+      
+      render();
+    })();
+    
+    // Network Visualization
+    (function initNetworkViz() {
+      const canvas = document.getElementById('networkCanvas');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      
+      const nodes = [
+        { x: 50, y: 50, label: 'Production', type: 'source' },
+        { x: 150, y: 80, label: 'Transit', type: 'route' },
+        { x: 250, y: 60, label: 'Port', type: 'chokepoint' },
+        { x: 150, y: 150, label: 'Market', type: 'destination' }
+      ];
+      
+      const edges = [
+        { from: 0, to: 1 }, { from: 1, to: 2 }, { from: 2, to: 3 }, { from: 1, to: 3 }
+      ];
+      
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+        ctx.lineWidth = 2;
+        edges.forEach(edge => {
+          ctx.beginPath();
+          ctx.moveTo(nodes[edge.from].x, nodes[edge.from].y);
+          ctx.lineTo(nodes[edge.to].x, nodes[edge.to].y);
+          ctx.stroke();
+        });
+        
+        nodes.forEach(node => {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 8, 0, Math.PI * 2);
+          ctx.fillStyle = node.type === 'chokepoint' ? '#f59e0b' : node.type === 'source' ? '#ef4444' : '#06b6d4';
+          ctx.fill();
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          
+          ctx.fillStyle = '#e8edf9';
+          ctx.font = '10px IBM Plex Sans';
+          ctx.fillText(node.label, node.x + 12, node.y + 4);
+        });
+      }
+      
+      draw();
+      
+      document.getElementById('toggleNetwork').addEventListener('click', () => {
+        // Simple animation
+        let pulseSize = 8;
+        let growing = true;
+        const interval = setInterval(() => {
+          if (growing) {
+            pulseSize += 0.5;
+            if (pulseSize >= 15) growing = false;
+          } else {
+            pulseSize -= 0.5;
+            if (pulseSize <= 8) {
+              clearInterval(interval);
+              draw();
+            }
+          }
+          
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+          ctx.lineWidth = 2;
+          edges.forEach(edge => {
+            ctx.beginPath();
+            ctx.moveTo(nodes[edge.from].x, nodes[edge.from].y);
+            ctx.lineTo(nodes[edge.to].x, nodes[edge.to].y);
+            ctx.stroke();
+          });
+          
+          nodes.forEach(node => {
+            ctx.beginPath();
+            const radius = node.type === 'chokepoint' ? pulseSize : 8;
+            ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = node.type === 'chokepoint' ? '#f59e0b' : node.type === 'source' ? '#ef4444' : '#06b6d4';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            ctx.fillStyle = '#e8edf9';
+            ctx.font = '10px IBM Plex Sans';
+            ctx.fillText(node.label, node.x + 12, node.y + 4);
+          });
+        }, 50);
+      });
+    })();
+    
+    // Local Storage & Export
+    function saveSession() {
+      alert('Session would be saved to IndexedDB. Your data never leaves your device.');
+    }
+    
+    function exportAnalysis() {
+      const data = {
+        timestamp: new Date().toISOString(),
+        platform: 'Venezuela-U.S. Drug Policy Systems Analysis',
+        version: '2.0',
+        note: 'This export contains your local analysis. Verify legal and constitutional compliance before implementation.'
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `policy-analysis-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    
+    document.getElementById('saveBtn').addEventListener('click', saveSession);
+    document.getElementById('exportBtn').addEventListener('click', exportAnalysis);
+    
+    // Progress Tracking
+    (function trackProgress() {
+      const sections = document.querySelectorAll('.section');
+      let reviewedSections = new Set();
+      let openedInterventions = new Set();
+      
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              reviewedSections.add(entry.target.id);
+              updateProgress();
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      
+      sections.forEach(section => {
+        if (section.id) sectionObserver.observe(section);
+      });
+      
+      document.addEventListener('toggle', (event) => {
+        if (event.target.tagName === 'DETAILS' && event.target.open) {
+          openedInterventions.add(event.target);
+          updateProgress();
+        }
+      });
+      
+      function updateProgress() {
+        const sectionsReviewed = document.getElementById('sectionsReviewed');
+        const sectionProgress = document.getElementById('sectionProgress');
+        if (sectionsReviewed && sectionProgress) {
+          const pct = (reviewedSections.size / sections.length) * 100;
+          sectionsReviewed.textContent = `${reviewedSections.size}/${sections.length}`;
+          sectionProgress.style.width = `${pct}%`;
+        }
+        
+        const interventionsExplored = document.getElementById('interventionsExplored');
+        const interventionProgress = document.getElementById('interventionProgress');
+        if (interventionsExplored && interventionProgress) {
+          const pct = (openedInterventions.size / INTERVENTIONS.length) * 100;
+          interventionsExplored.textContent = `${openedInterventions.size}/${INTERVENTIONS.length}`;
+          interventionProgress.style.width = `${pct}%`;
+        }
+      }
+    })();
+    
+    // Remove splash
+    setTimeout(() => {
+      const splash = document.getElementById('splash');
+      if (splash) splash.style.display = 'none';
+    }, 2500);
+    
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+  
+</body>
+</html>
